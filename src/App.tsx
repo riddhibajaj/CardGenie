@@ -9,6 +9,7 @@ import SmartSelector from "./components/SmartSelector";
 import AlertsCenter from "./components/AlertsCenter";
 import ChatAssistant from "./components/ChatAssistant";
 import CardAnalysis from "./components/CardAnalysis";
+import RewardsCalendar from "./components/RewardsCalendar";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/alerts" element={<AlertsCenter />} />
           <Route path="/chat" element={<ChatAssistant />} />
           <Route path="/card/:cardId" element={<CardAnalysis />} />
+          <Route path="/calendar" element={<RewardsCalendar />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -42,6 +42,9 @@ const Dashboard = () => {
               </div>
             </div>
             <div className="flex items-center gap-3">
+              <Button variant="outline" size="icon" onClick={() => navigate("/calendar")}>
+                <Bell className="h-5 w-5" />
+              </Button>
               <Button variant="outline" size="icon" onClick={() => navigate("/alerts")}>
                 <Bell className="h-5 w-5" />
               </Button>

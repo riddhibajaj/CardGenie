@@ -308,3 +308,123 @@ export const mockRecommendation = {
     },
   ],
 };
+
+export interface CalendarEvent {
+  id: string;
+  type: 'bonus' | 'expiration' | 'promotion';
+  title: string;
+  description: string;
+  date: string;
+  cardId: string;
+  cardName: string;
+  value?: number;
+  notificationEnabled: boolean;
+}
+
+export const mockCalendarEvents: CalendarEvent[] = [
+  {
+    id: "1",
+    type: "bonus",
+    title: "5X Bonus on Dining",
+    description: "Earn 5X points on all restaurant purchases",
+    date: "2025-11-15",
+    cardId: "1",
+    cardName: "Chase Sapphire Reserve",
+    notificationEnabled: true,
+  },
+  {
+    id: "2",
+    type: "expiration",
+    title: "Marriott Points Expiring",
+    description: "28,500 Marriott Bonvoy points will expire",
+    date: "2025-02-01",
+    cardId: "",
+    cardName: "Marriott Bonvoy",
+    value: 22800,
+    notificationEnabled: true,
+  },
+  {
+    id: "3",
+    type: "promotion",
+    title: "Amazon 10% Cashback",
+    description: "Get 10% cashback on Amazon purchases up to $50",
+    date: "2025-11-20",
+    cardId: "2",
+    cardName: "Amex Gold Card",
+    value: 5000,
+    notificationEnabled: true,
+  },
+  {
+    id: "4",
+    type: "bonus",
+    title: "3X on Gas Stations",
+    description: "Earn 3X points at gas stations",
+    date: "2025-12-01",
+    cardId: "4",
+    cardName: "Capital One Venture X",
+    notificationEnabled: false,
+  },
+  {
+    id: "5",
+    type: "expiration",
+    title: "United Miles Expiring",
+    description: "45,000 United MileagePlus miles will expire",
+    date: "2025-03-15",
+    cardId: "",
+    cardName: "United MileagePlus",
+    value: 58500,
+    notificationEnabled: true,
+  },
+  {
+    id: "6",
+    type: "promotion",
+    title: "Double Points Weekend",
+    description: "Earn 2X points on all purchases this weekend",
+    date: "2025-11-23",
+    cardId: "3",
+    cardName: "Citi Double Cash",
+    notificationEnabled: true,
+  },
+  {
+    id: "7",
+    type: "bonus",
+    title: "4X on Streaming Services",
+    description: "Earn 4X points on Netflix, Spotify, and more",
+    date: "2025-12-10",
+    cardId: "2",
+    cardName: "Amex Gold Card",
+    notificationEnabled: false,
+  },
+  {
+    id: "8",
+    type: "promotion",
+    title: "Grocery Store 5% Back",
+    description: "Get 5% cashback at select grocery stores",
+    date: "2025-11-25",
+    cardId: "2",
+    cardName: "Amex Gold Card",
+    value: 7500,
+    notificationEnabled: true,
+  },
+  {
+    id: "9",
+    type: "bonus",
+    title: "Travel Booking Bonus",
+    description: "Earn 10X points when booking through travel portal",
+    date: "2025-12-15",
+    cardId: "1",
+    cardName: "Chase Sapphire Reserve",
+    notificationEnabled: true,
+  },
+  {
+    id: "10",
+    type: "expiration",
+    title: "Annual Fee Due",
+    description: "Chase Sapphire Reserve annual fee of $550",
+    date: "2025-01-15",
+    cardId: "1",
+    cardName: "Chase Sapphire Reserve",
+    value: 55000,
+    notificationEnabled: true,
+  },
+];
