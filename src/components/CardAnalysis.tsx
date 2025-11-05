@@ -1,4 +1,5 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { ArrowLeft, TrendingUp, Calendar, Target, AlertCircle } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -14,17 +15,17 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, LineCh
 import { mockCards, mockTransactions } from "@/data/mockData";
 
 const CardAnalysis = () => {
-  const { cardId } = useParams();
   const navigate = useNavigate();
+  const [selectedCardId, setSelectedCardId] = useState(mockCards[0]?.id || "");
   
-  const card = mockCards.find(c => c.id === cardId);
-  const cardTransactions = mockTransactions.filter(t => t.cardId === cardId);
+  const card = mockCards.find(c => c.id === selectedCardId);
+  const cardTransactions = mockTransactions.filter(t => t.cardId === selectedCardId);
   
   if (!card) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 p-8">
         <div className="container mx-auto text-center">
-          <h1 className="text-2xl font-bold mb-4">Card not found</h1>
+          <h1 className="text-2xl font-bold mb-4">No cards found</h1>
           <Button onClick={() => navigate("/dashboard")}>Back to Dashboard</Button>
         </div>
       </div>
@@ -122,11 +123,29 @@ const CardAnalysis = () => {
               <ArrowLeft className="h-4 w-4" />
               Back to Dashboard
             </Button>
+            <h1 className="text-xl font-bold">Card Analysis</h1>
           </div>
         </div>
       </header>
 
       <main className="container mx-auto px-4 py-8">
+        {/* Card Tabs */}
+        <Tabs value={selectedCardId} onValueChange={setSelectedCardId} className="mb-8">
+          <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2 h-auto bg-transparent">
+            {mockCards.map((c) => (
+              <TabsTrigger 
+                key={c.id} 
+                value={c.id}
+                className="data-[state=active]:bg-primary data-[state=active]:text-white border border-border bg-card h-auto py-3"
+              >
+                <div className="flex flex-col items-start w-full">
+                  <span className="font-semibold text-sm">{c.issuer}</span>
+                  <span className="text-xs opacity-80">{c.name}</span>
+                </div>
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
         {/* Card Header */}
         <Card className={`mb-8 bg-gradient-to-r ${card.color} text-white border-0`}>
           <CardHeader>

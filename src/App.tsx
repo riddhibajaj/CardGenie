@@ -28,6 +28,7 @@ const App = () => (
           <Route path="/alerts" element={<AlertsCenter />} />
           <Route path="/chat" element={<ChatAssistant />} />
           <Route path="/card/:cardId" element={<CardAnalysis />} />
+          <Route path="/card-analysis" element={<CardAnalysis />} />
           <Route path="/calendar" element={<RewardsCalendar />} />
           <Route path="/profile" element={<Profile />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

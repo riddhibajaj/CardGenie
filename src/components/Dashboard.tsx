@@ -75,7 +75,7 @@ const Dashboard = () => {
               <Progress value={mockUser.optimizationScore} className="h-2 bg-white/20" />
               <Button 
                 className="w-full bg-white text-primary hover:bg-gray-100 mt-4"
-                onClick={() => setShowPortfolioModal(true)}
+                onClick={() => navigate("/card-analysis")}
               >
                 <Sparkles className="mr-2 h-4 w-4" />
                 View Optimization Details
