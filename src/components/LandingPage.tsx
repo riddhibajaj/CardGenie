@@ -10,26 +10,28 @@ const LandingPage = () => {
     <div className="min-h-screen bg-gradient-hero">
       {/* Navigation */}
       <nav className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4">
-          <div className="flex items-center gap-2 font-bold text-xl">
-            <div className="h-8 w-8 rounded-lg bg-gradient-accent flex items-center justify-center">
-              <CreditCard className="h-5 w-5 text-white" />
+        <div className="container mx-auto px-4">
+          <div className="flex h-16 items-center justify-between">
+            <div className="flex items-center gap-2 font-bold text-xl">
+              <div className="h-8 w-8 rounded-lg bg-gradient-accent flex items-center justify-center">
+                <CreditCard className="h-5 w-5 text-white" />
+              </div>
+              <span>CardGenie</span>
             </div>
-            <span>CardGenie</span>
-          </div>
-          <div className="flex items-center gap-6">
-            <a href="#home" className="text-sm font-medium hover:text-primary transition-colors">
-              Home
-            </a>
-            <a href="#why" className="text-sm font-medium hover:text-primary transition-colors">
-              Why CardGenie
-            </a>
-            <a href="#features" className="text-sm font-medium hover:text-primary transition-colors">
-              Features
-            </a>
-            <a href="#how" className="text-sm font-medium hover:text-primary transition-colors">
-              How it Works
-            </a>
+            <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-6">
+              <a href="#home" className="text-sm font-medium hover:text-primary transition-colors">
+                Home
+              </a>
+              <a href="#why" className="text-sm font-medium hover:text-primary transition-colors">
+                Why CardGenie
+              </a>
+              <a href="#features" className="text-sm font-medium hover:text-primary transition-colors">
+                Features
+              </a>
+              <a href="#how" className="text-sm font-medium hover:text-primary transition-colors">
+                How it Works
+              </a>
+            </div>
             <Button onClick={() => navigate("/dashboard")} className="bg-gradient-primary">
               Try Demo
               <ArrowRight className="ml-2 h-4 w-4" />
@@ -47,9 +49,9 @@ const LandingPage = () => {
           </div>
           
           <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-            Get the Most from Every Card{" "}
+            Maximize Rewards,{" "}
             <span className="bg-gradient-accent bg-clip-text text-transparent">
-              in Your Wallet
+              Minimize Effort
             </span>
           </h1>
           
@@ -90,89 +92,60 @@ const LandingPage = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <div className="inline-block bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium mb-6">
-              Why CardGenie
+              The Difference
             </div>
-            <h2 className="text-4xl font-bold mb-8">Rewards Made Simple. Value Made Real.</h2>
-            
-            <div className="flex flex-wrap justify-center gap-8 mb-12 text-muted-foreground">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-foreground mb-1">50+</div>
-                <div className="text-sm">integrations</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-foreground mb-1">30 secs</div>
-                <div className="text-sm">setup</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-foreground mb-1">$750</div>
-                <div className="text-sm">Hidden Rewards</div>
-              </div>
-            </div>
+            <h2 className="text-4xl font-bold mb-8">Same Cards. Same Spending. Dramatically Different Results.</h2>
           </div>
 
-          <div className="max-w-5xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-4">
-              <Card className="border-2 border-destructive/20">
+          <div className="max-w-4xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-8">
+              <Card className="border-2 border-destructive/20 bg-destructive/5">
                 <CardContent className="pt-6">
-                  <h3 className="text-lg font-bold mb-4 text-center">WITHOUT CardGenie</h3>
-                  <div className="space-y-4">
-                    <div className="border-b border-border pb-3">
-                      <div className="font-medium mb-1">😵 Guessing</div>
-                      <div className="text-sm text-muted-foreground">Which card to use?</div>
-                      <div className="text-sm text-destructive">Wrong 40% of time</div>
+                  <h3 className="text-lg font-bold mb-6 text-center flex items-center justify-center gap-2">
+                    ❌ Without CardGenie
+                  </h3>
+                  <div className="space-y-6">
+                    <div className="border-l-4 border-destructive/40 pl-4">
+                      <div className="font-semibold mb-1">😵 Wrong 40%</div>
+                      <div className="text-sm text-muted-foreground">Guessing which card</div>
                     </div>
-                    <div className="border-b border-border pb-3">
-                      <div className="font-medium mb-1">💸 $847/year</div>
-                      <div className="text-sm text-muted-foreground">Left on table</div>
+                    <div className="border-l-4 border-destructive/40 pl-4">
+                      <div className="font-semibold mb-1">💸 $847 lost</div>
+                      <div className="text-sm text-muted-foreground">Left on table yearly</div>
                     </div>
-                    <div className="border-b border-border pb-3">
-                      <div className="font-medium mb-1">⏰ 3 hours/month</div>
-                      <div className="text-sm text-muted-foreground">Tracking manually</div>
+                    <div className="border-l-4 border-destructive/40 pl-4">
+                      <div className="font-semibold mb-1">⏰ 3 hrs/month</div>
+                      <div className="text-sm text-muted-foreground">Manual tracking</div>
                     </div>
-                    <div className="border-b border-border pb-3">
-                      <div className="font-medium mb-1">📉 Points expire</div>
-                      <div className="text-sm text-muted-foreground">Silently</div>
-                    </div>
-                    <div className="border-b border-border pb-3">
-                      <div className="font-medium mb-1">❓ No clue</div>
-                      <div className="text-sm text-muted-foreground">What points worth</div>
-                    </div>
-                    <div className="pb-3">
-                      <div className="font-medium mb-1">🤷 Forgot to</div>
-                      <div className="text-sm text-muted-foreground">Activate 5% bonus</div>
+                    <div className="border-l-4 border-destructive/40 pl-4">
+                      <div className="font-semibold mb-1">📉 Silent loss</div>
+                      <div className="text-sm text-muted-foreground">Points expire quietly</div>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="border-2 border-success/20">
+              <Card className="border-2 border-success/20 bg-success/5">
                 <CardContent className="pt-6">
-                  <h3 className="text-lg font-bold mb-4 text-center">WITH CardGenie</h3>
-                  <div className="space-y-4">
-                    <div className="border-b border-border pb-3">
-                      <div className="font-medium mb-1">✨ AI Recommends</div>
-                      <div className="text-sm text-muted-foreground">Best card instantly</div>
-                      <div className="text-sm text-success">Optimal 95% of time</div>
+                  <h3 className="text-lg font-bold mb-6 text-center flex items-center justify-center gap-2">
+                    ✅ With CardGenie
+                  </h3>
+                  <div className="space-y-6">
+                    <div className="border-l-4 border-success pl-4">
+                      <div className="font-semibold mb-1">✨ Best 95%</div>
+                      <div className="text-sm text-muted-foreground">AI-powered optimal choice</div>
                     </div>
-                    <div className="border-b border-border pb-3">
-                      <div className="font-medium mb-1">💰 $847/year</div>
-                      <div className="text-sm text-muted-foreground">Captured & saved</div>
+                    <div className="border-l-4 border-success pl-4">
+                      <div className="font-semibold mb-1">💰 $847 captured</div>
+                      <div className="text-sm text-muted-foreground">Maximum value secured</div>
                     </div>
-                    <div className="border-b border-border pb-3">
-                      <div className="font-medium mb-1">⏱️ 5 minutes/month</div>
+                    <div className="border-l-4 border-success pl-4">
+                      <div className="font-semibold mb-1">⏱️ 5 mins/month</div>
                       <div className="text-sm text-muted-foreground">Automated tracking</div>
                     </div>
-                    <div className="border-b border-border pb-3">
-                      <div className="font-medium mb-1">🔔 Alerted 30 days</div>
-                      <div className="text-sm text-muted-foreground">Before expiration</div>
-                    </div>
-                    <div className="border-b border-border pb-3">
-                      <div className="font-medium mb-1">📊 $2,847 total</div>
-                      <div className="text-sm text-muted-foreground">Value at a glance</div>
-                    </div>
-                    <div className="pb-3">
-                      <div className="font-medium mb-1">✅ Never miss</div>
-                      <div className="text-sm text-muted-foreground">Auto-reminders</div>
+                    <div className="border-l-4 border-success pl-4">
+                      <div className="font-semibold mb-1">🔔 30-day alerts</div>
+                      <div className="text-sm text-muted-foreground">Never miss expiration</div>
                     </div>
                   </div>
                 </CardContent>
@@ -195,7 +168,7 @@ const LandingPage = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
             <Card className="border-2 hover:shadow-glow transition-all duration-300 group">
               <CardContent className="pt-6">
                 <div className="h-12 w-12 rounded-lg bg-gradient-accent flex items-center justify-center mb-4">
@@ -235,24 +208,6 @@ const LandingPage = () => {
             <Card className="border-2 hover:shadow-glow transition-all duration-300 group">
               <CardContent className="pt-6">
                 <div className="h-12 w-12 rounded-lg bg-gradient-accent flex items-center justify-center mb-4">
-                  <Bell className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="text-xl font-bold mb-3">Expiration Alerts</h3>
-                <p className="text-muted-foreground mb-4">
-                  Never lose rewards value to expiration again
-                </p>
-                <div className="hidden group-hover:block text-sm text-muted-foreground space-y-1">
-                  <div>• Monitors all programs 24/7</div>
-                  <div>• Alerts at 30, 7, and 1 day before expiration</div>
-                  <div>• Shows value at risk ($340 United miles)</div>
-                  <div>• Suggests actions to save points</div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-2 hover:shadow-glow transition-all duration-300 group">
-              <CardContent className="pt-6">
-                <div className="h-12 w-12 rounded-lg bg-gradient-primary flex items-center justify-center mb-4">
                   <Zap className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="text-xl font-bold mb-3">AI Chat Assistant</h3>
@@ -270,7 +225,7 @@ const LandingPage = () => {
 
             <Card className="border-2 hover:shadow-glow transition-all duration-300 group">
               <CardContent className="pt-6">
-                <div className="h-12 w-12 rounded-lg bg-gradient-accent flex items-center justify-center mb-4">
+                <div className="h-12 w-12 rounded-lg bg-gradient-primary flex items-center justify-center mb-4">
                   <Shield className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="text-xl font-bold mb-3">Credit Health Monitoring</h3>
@@ -338,7 +293,7 @@ const LandingPage = () => {
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold mb-6">Ready to Maximize Your Rewards?</h2>
           <p className="text-xl mb-10 opacity-90 max-w-2xl mx-auto">
-            Join thousands of smart cardholders who are capturing every dollar in rewards value.
+            Join smart cardholders who are capturing every dollar in rewards value.
           </p>
           <Button 
             size="lg" 
@@ -354,7 +309,7 @@ const LandingPage = () => {
       {/* Footer */}
       <footer className="border-t border-border bg-background py-12">
         <div className="container mx-auto px-4 text-center text-muted-foreground">
-          <p>&copy; 2024 CardGenie. All rights reserved.</p>
+          <p>&copy; 2025 CardGenie. All rights reserved.</p>
         </div>
       </footer>
     </div>
