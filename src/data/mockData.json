@@ -1,0 +1,299 @@
+{
+    "_meta": {
+        "version": "1.0",
+        "source": "CardGenie Mock Generator",
+        "generatedAt": "2025-11-05T00:00:00Z"
+    },
+    "user": {
+        "id": "sarah-demo",
+        "name": "Sarah Jensen",
+        "email": "sarah@demo.com",
+        "isSoundCreditUnionMember": true,
+        "linkedCardIds": [
+            "sound-cu-cashback",
+            "chase-sapphire-preferred",
+            "chase-freedom-flex",
+            "citi-double-cash"
+        ],
+        "linkedLoyaltyIds": [
+            "hyatt",
+            "united",
+            "hilton",
+            "costco"
+        ],
+        "creditScore": 720,
+        "portfolioUtilization": 18,
+        "totalRewardsValue": 284700,
+        "potentialRewardsValue": 396000,
+        "expiringValueSoon": 34000,
+        "optimizationScore": 78,
+        "monthlySpendingAverage": 116000,
+        "preferences": {
+            "preferredRedemptionType": "travel",
+            "riskTolerance": "moderate",
+            "autoOptimizeEnabled": true
+        },
+        "insights": {
+            "totalMissedRewardsCents": 112300,
+            "topMissedCategory": "grocery",
+            "topUnderusedCard": "chase-freedom-flex"
+        }
+    },
+    "cards": [
+        {
+            "id": "sound-cu-cashback",
+            "name": "Sound Credit Union Cash Back",
+            "issuer": "Sound Credit Union",
+            "network": "Visa",
+            "type": "cashback",
+            "annualFee": 0,
+            "creditLimit": 800000,
+            "currentBalance": 132000,
+            "apr": {
+                "purchase": 0.1799,
+                "cashAdvance": 0.2599,
+                "penalty": 0.2999
+            },
+            "lastFour": "2345",
+            "color": "from-blue-500 to-blue-700",
+            "rewardsProgram": "Sound CU Rewards",
+            "rewardCurrency": "cashback",
+            "rewards": {
+                "default": {
+                    "rate": 0.015,
+                    "type": "cashback"
+                }
+            }
+        },
+        {
+            "id": "chase-sapphire-preferred",
+            "name": "Chase Sapphire Preferred",
+            "issuer": "Chase",
+            "network": "Visa",
+            "type": "travel-rewards",
+            "annualFee": 9500,
+            "creditLimit": 1200000,
+            "currentBalance": 234000,
+            "apr": {
+                "purchase": 0.1999,
+                "cashAdvance": 0.2599,
+                "penalty": 0.2999
+            },
+            "lastFour": "4892",
+            "color": "from-blue-600 to-blue-800",
+            "rewardsProgram": "Chase Ultimate Rewards",
+            "rewardCurrency": "points",
+            "rewards": {
+                "dining": {
+                    "rate": 0.03,
+                    "pointsPerDollar": 3
+                },
+                "travel": {
+                    "rate": 0.03,
+                    "pointsPerDollar": 3
+                },
+                "default": {
+                    "rate": 0.01,
+                    "pointsPerDollar": 1
+                }
+            },
+            "pointValue": 0.0125,
+            "transferPartners": [
+                {
+                    "programId": "hyatt",
+                    "ratio": 1.0
+                },
+                {
+                    "programId": "united",
+                    "ratio": 1.0
+                }
+            ]
+        },
+        {
+            "id": "chase-freedom-flex",
+            "name": "Chase Freedom Flex",
+            "issuer": "Chase",
+            "network": "Mastercard",
+            "type": "rotating-rewards",
+            "annualFee": 0,
+            "creditLimit": 900000,
+            "currentBalance": 85000,
+            "apr": {
+                "purchase": 0.1899,
+                "cashAdvance": 0.2499,
+                "penalty": 0.2999
+            },
+            "lastFour": "7724",
+            "color": "from-purple-500 to-indigo-700",
+            "rewardsProgram": "Chase Ultimate Rewards",
+            "rewardCurrency": "points",
+            "rewards": {
+                "rotating": {
+                    "rate": 0.05,
+                    "categories": [
+                        "grocery",
+                        "gas"
+                    ]
+                },
+                "default": {
+                    "rate": 0.01
+                }
+            },
+            "requiresActivation": true
+        },
+        {
+            "id": "citi-double-cash",
+            "name": "Citi Double Cash",
+            "issuer": "Citi",
+            "network": "Mastercard",
+            "type": "cashback",
+            "annualFee": 0,
+            "creditLimit": 1000000,
+            "currentBalance": 198000,
+            "apr": {
+                "purchase": 0.2099,
+                "cashAdvance": 0.2599,
+                "penalty": 0.2999
+            },
+            "lastFour": "6239",
+            "color": "from-green-600 to-emerald-800",
+            "rewardsProgram": "Citi ThankYou Rewards",
+            "rewardCurrency": "cashback",
+            "rewards": {
+                "default": {
+                    "rate": 0.02
+                }
+            }
+        }
+    ],
+    "loyaltyPrograms": [
+        {
+            "id": "hyatt",
+            "name": "World of Hyatt",
+            "type": "hotel",
+            "icon": "🏨",
+            "balance": 45000,
+            "valueCents": 81000,
+            "valuePerPoint": 0.018,
+            "transferInPartners": [
+                {
+                    "cardId": "chase-sapphire-preferred",
+                    "ratio": 1.0
+                }
+            ]
+        },
+        {
+            "id": "united",
+            "name": "United MileagePlus",
+            "type": "airline",
+            "icon": "✈️",
+            "balance": 60000,
+            "valueCents": 78000,
+            "valuePerPoint": 0.013,
+            "transferInPartners": [
+                {
+                    "cardId": "chase-sapphire-preferred",
+                    "ratio": 1.0
+                }
+            ]
+        },
+        {
+            "id": "hilton",
+            "name": "Hilton Honors",
+            "type": "hotel",
+            "icon": "🏢",
+            "balance": 80000,
+            "valueCents": 48000,
+            "valuePerPoint": 0.006,
+            "transferInPartners": []
+        },
+        {
+            "id": "costco",
+            "name": "Costco Executive Rewards",
+            "type": "retail",
+            "icon": "🛒",
+            "balance": 12000,
+            "valueCents": 12000,
+            "valuePerPoint": 0.01,
+            "transferInPartners": []
+        }
+    ],
+    "activePromotions": [
+        {
+            "cardId": "chase-freedom-flex",
+            "category": "grocery",
+            "bonusRate": 0.05,
+            "startDate": "2025-10-01",
+            "endDate": "2025-12-31",
+            "requiresActivation": true,
+            "activated": false,
+            "potentialValue": 12000
+        }
+    ],
+    "optimizationRules": {
+        "categoryBestCards": {
+            "grocery": {
+                "standardBest": "citi-double-cash",
+                "withPromotion": "chase-freedom-flex",
+                "currentBestRate": 0.05
+            },
+            "dining": {
+                "standardBest": "chase-sapphire-preferred",
+                "currentBestRate": 0.03
+            },
+            "travel": {
+                "standardBest": "chase-sapphire-preferred",
+                "currentBestRate": 0.03
+            },
+            "gas": {
+                "standardBest": "citi-double-cash",
+                "withPromotion": "chase-freedom-flex",
+                "currentBestRate": 0.05
+            },
+            "default": {
+                "standardBest": "citi-double-cash",
+                "currentBestRate": 0.02
+            }
+        }
+    },
+    "goals": [
+        {
+            "id": "goal-hawaii",
+            "name": "Hawaii Vacation",
+            "type": "travel",
+            "targetValue": 250000,
+            "currentValue": 167500,
+            "deadline": "2025-06-15",
+            "primaryProgram": "united"
+        },
+        {
+            "id": "goal-emergency",
+            "name": "Emergency Fund Boost",
+            "type": "cashback",
+            "targetValue": 50000,
+            "currentValue": 32000,
+            "deadline": "2025-03-31"
+        }
+    ],
+    "alerts": [
+        {
+            "id": "alert-united-expiring",
+            "severity": "urgent",
+            "title": "United Miles Expiring Soon",
+            "message": "15,000 United miles expire in 23 days",
+            "valueAtRisk": 21000,
+            "daysUntilExpiration": 23,
+            "actionLabel": "Extend Miles",
+            "createdAt": "2025-11-01T10:00:00Z"
+        },
+        {
+            "id": "alert-freedom-q4",
+            "severity": "warning",
+            "title": "Activate Q4 Freedom Bonus",
+            "message": "You haven't activated 5% grocery & gas bonus. Worth $120 this quarter.",
+            "valueAtRisk": 12000,
+            "actionLabel": "Activate Now",
+            "createdAt": "2025-11-02T08:00:00Z"
+        }
+    ]
+}

@@ -14,9 +14,13 @@ import {
 } from "lucide-react";
 import { mockUser, mockCards, mockLoyaltyAccounts, mockAlerts, mockGoals } from "@/data/mockData";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import PortfolioOptimizationModal from "./PortfolioOptimizationModal";
+import mockDataJson from "@/data/mockData.json";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const [showPortfolioModal, setShowPortfolioModal] = useState(false);
 
   const formatCurrency = (cents: number) => {
     return `$${(cents / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
@@ -56,15 +60,23 @@ const Dashboard = () => {
       <main className="container mx-auto px-4 py-8">
         {/* Key Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card className="bg-gradient-accent text-white border-0">
+          <Card 
+            className="bg-gradient-accent text-white border-0 cursor-pointer hover:shadow-lg transition-shadow relative group"
+            onClick={() => setShowPortfolioModal(true)}
+          >
             <CardHeader className="pb-3">
               <CardDescription className="text-white/80">Total Portfolio Value</CardDescription>
               <CardTitle className="text-3xl">{formatCurrency(mockUser.totalRewardsValue)}</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center text-sm text-white/80">
-                <TrendingUp className="mr-2 h-4 w-4" />
-                <span>+$240 this month</span>
+              <div className="flex items-center justify-between text-sm text-white/80">
+                <div className="flex items-center">
+                  <TrendingUp className="mr-2 h-4 w-4" />
+                  <span>+$240 this month</span>
+                </div>
+                <span className="text-xs opacity-75 group-hover:opacity-100 transition-opacity">
+                  View Details →
+                </span>
               </div>
             </CardContent>
           </Card>
@@ -272,6 +284,15 @@ const Dashboard = () => {
           </div>
         </div>
       </main>
+
+      <PortfolioOptimizationModal
+        isOpen={showPortfolioModal}
+        onClose={() => setShowPortfolioModal(false)}
+        userData={mockDataJson.user}
+        cards={mockDataJson.cards}
+        alerts={mockDataJson.alerts}
+        optimizationRules={mockDataJson.optimizationRules}
+      />
     </div>
   );
 };
