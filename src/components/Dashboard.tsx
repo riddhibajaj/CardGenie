@@ -136,6 +136,7 @@ const Dashboard = () => {
                   <div 
                     key={card.id} 
                     className="flex items-center justify-between p-4 rounded-lg border border-border hover:border-primary transition-colors cursor-pointer"
+                    onClick={() => navigate(`/card/${card.id}`)}
                   >
                     <div className="flex items-center gap-4">
                       <div className={`h-16 w-24 rounded-lg bg-gradient-to-br ${card.color} flex items-center justify-center text-white font-mono text-sm`}>
