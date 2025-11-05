@@ -65,6 +65,7 @@ export const mockUser = {
   portfolioUtilization: 18,
   creditScore: 785,
   expiringValueSoon: 34000, // in cents
+  optimizationScore: 78,
 };
 
 export const mockCards: CreditCard[] = [

@@ -60,24 +60,18 @@ const Dashboard = () => {
       <main className="container mx-auto px-4 py-8">
         {/* Key Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card 
-            className="bg-gradient-accent text-white border-0 cursor-pointer hover:shadow-lg transition-shadow relative group"
-            onClick={() => setShowPortfolioModal(true)}
-          >
+          <Card className="bg-gradient-accent text-white border-0">
             <CardHeader className="pb-3">
-              <CardDescription className="text-white/80">Total Portfolio Value</CardDescription>
-              <CardTitle className="text-3xl">{formatCurrency(mockUser.totalRewardsValue)}</CardTitle>
+              <CardDescription className="text-white/80">Optimization Score</CardDescription>
+              <CardTitle className="text-3xl">{mockUser.optimizationScore}%</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center justify-between text-sm text-white/80">
-                <div className="flex items-center">
-                  <TrendingUp className="mr-2 h-4 w-4" />
-                  <span>+$240 this month</span>
-                </div>
-                <span className="text-xs opacity-75 group-hover:opacity-100 transition-opacity">
-                  View Details →
-                </span>
-              </div>
+              <Button 
+                className="w-full bg-white text-primary hover:bg-gray-100"
+                onClick={() => setShowPortfolioModal(true)}
+              >
+                View Details
+              </Button>
             </CardContent>
           </Card>
 
