@@ -43,18 +43,15 @@ const Dashboard = () => {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <Button variant="outline" size="icon" onClick={() => navigate("/profile")}>
-                <User className="h-5 w-5" />
-              </Button>
               <Button variant="outline" size="icon" onClick={() => navigate("/alerts")}>
                 <Bell className="h-5 w-5" />
               </Button>
               <Button variant="outline" size="icon" onClick={() => navigate("/chat")}>
                 <MessageSquare className="h-5 w-5" />
               </Button>
-              <Button onClick={() => navigate("/selector")} className="bg-gradient-primary">
-                <Sparkles className="mr-2 h-4 w-4" />
-                Smart Selector
+              <Button onClick={() => navigate("/profile")} className="bg-gradient-primary">
+                <User className="mr-2 h-4 w-4" />
+                Profile
               </Button>
             </div>
           </div>
