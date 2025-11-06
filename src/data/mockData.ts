@@ -59,79 +59,80 @@ export interface Goal {
 
 export const mockUser = {
   id: "1",
-  name: "Sarah Johnson",
-  email: "sarah@example.com",
-  totalRewardsValue: 284700, // in cents
-  portfolioUtilization: 18,
-  creditScore: 785,
-  expiringValueSoon: 34000, // in cents
+  name: "Riddhi Bajaj",
+  email: "rbajaj2@uw.edu",
+  phone: "+1 206 555 1234",
+  location: "Bellevue, WA",
+  totalRewardsValue: 175500, // in cents ($1,755)
+  portfolioUtilization: 23,
+  creditScore: 720,
+  expiringValueSoon: 96500, // in cents ($965)
   optimizationScore: 78,
 };
 
 export const mockCards: CreditCard[] = [
   {
     id: "1",
-    name: "Chase Sapphire Reserve",
-    issuer: "Chase",
+    name: "Sound Credit Union Rewards",
+    issuer: "Sound Credit Union",
     lastFour: "4892",
     network: "Visa",
-    color: "from-blue-900 to-blue-700",
-    rewardsProgram: "Ultimate Rewards",
-    annualFee: 550,
-    creditLimit: 25000,
-    currentBalance: 3420,
+    color: "from-blue-600 to-blue-500",
+    rewardsProgram: "Sound Rewards",
+    annualFee: 0,
+    creditLimit: 300000, // $3,000
+    currentBalance: 75000, // $750
     categories: [
-      { name: "Travel", rate: 3 },
-      { name: "Dining", rate: 3 },
-      { name: "Everything Else", rate: 1 },
+      { name: "Everything", rate: 1 },
     ],
   },
   {
     id: "2",
-    name: "Amex Gold Card",
-    issuer: "American Express",
+    name: "Sound Credit Union Cashback",
+    issuer: "Sound Credit Union",
     lastFour: "1004",
-    network: "Amex",
-    color: "from-yellow-600 to-yellow-500",
-    rewardsProgram: "Membership Rewards",
-    annualFee: 250,
-    creditLimit: 18000,
-    currentBalance: 1850,
+    network: "Visa",
+    color: "from-green-600 to-green-500",
+    rewardsProgram: "Sound Cashback",
+    annualFee: 0,
+    creditLimit: 200000, // $2,000
+    currentBalance: 38000, // $380
     categories: [
-      { name: "Dining", rate: 4 },
-      { name: "Groceries", rate: 4 },
-      { name: "Everything Else", rate: 1 },
+      { name: "Everything", rate: 1.5 },
     ],
   },
   {
     id: "3",
-    name: "Citi Double Cash",
-    issuer: "Citi",
+    name: "Chase Freedom Flex",
+    issuer: "Chase",
     lastFour: "7823",
-    network: "Mastercard",
-    color: "from-gray-700 to-gray-600",
-    rewardsProgram: "ThankYou Points",
+    network: "Visa",
+    color: "from-purple-600 to-purple-500",
+    rewardsProgram: "Chase Ultimate Rewards",
     annualFee: 0,
-    creditLimit: 15000,
-    currentBalance: 2100,
+    creditLimit: 300000, // $3,000
+    currentBalance: 60000, // $600
     categories: [
-      { name: "Everything", rate: 2 },
+      { name: "Dining", rate: 3 },
+      { name: "Grocery", rate: 3 },
+      { name: "Travel", rate: 5 },
+      { name: "Everything", rate: 1 },
     ],
   },
   {
     id: "4",
-    name: "Capital One Venture X",
-    issuer: "Capital One",
+    name: "Citi Double Cash",
+    issuer: "Citi",
     lastFour: "3391",
-    network: "Visa",
-    color: "from-red-900 to-red-700",
-    rewardsProgram: "Venture Miles",
-    annualFee: 395,
-    creditLimit: 22000,
-    currentBalance: 890,
+    network: "Mastercard",
+    color: "from-gray-700 to-gray-600",
+    rewardsProgram: "Citi ThankYou Rewards",
+    annualFee: 0,
+    creditLimit: 150000, // $1,500
+    currentBalance: 40000, // $400
     categories: [
-      { name: "Travel", rate: 5 },
-      { name: "Everything Else", rate: 2 },
+      { name: "Dining", rate: 2 },
+      { name: "Travel", rate: 2 },
     ],
   },
 ];
@@ -139,39 +140,39 @@ export const mockCards: CreditCard[] = [
 export const mockLoyaltyAccounts: LoyaltyAccount[] = [
   {
     id: "1",
-    program: "Chase Ultimate Rewards",
-    balance: 125340,
-    valueCents: 187500,
+    program: "World of Hyatt",
+    balance: 32000,
+    valueCents: 64000, // ~$640
     expirationDate: null,
     daysUntilExpiration: null,
-    icon: "💎",
+    icon: "🏨",
   },
   {
     id: "2",
-    program: "Amex Membership Rewards",
-    balance: 84200,
-    valueCents: 84200,
-    expirationDate: null,
-    daysUntilExpiration: null,
-    icon: "✨",
-  },
-  {
-    id: "3",
     program: "United MileagePlus",
     balance: 45000,
-    valueCents: 58500,
+    valueCents: 67500, // ~$675
     expirationDate: "2025-03-15",
     daysUntilExpiration: 131,
     icon: "✈️",
   },
   {
+    id: "3",
+    program: "Hilton Honors",
+    balance: 58000,
+    valueCents: 29000, // ~$290
+    expirationDate: null,
+    daysUntilExpiration: null,
+    icon: "🏢",
+  },
+  {
     id: "4",
-    program: "Marriott Bonvoy",
-    balance: 28500,
-    valueCents: 22800,
-    expirationDate: "2025-02-01",
-    daysUntilExpiration: 89,
-    icon: "🏨",
+    program: "Costco Gold Star Member",
+    balance: 0,
+    valueCents: 15000, // ~$150 annual reward estimate
+    expirationDate: null,
+    daysUntilExpiration: null,
+    icon: "🛒",
   },
 ];
 
@@ -180,27 +181,28 @@ export const mockAlerts: Alert[] = [
     id: "1",
     type: "expiration",
     severity: "urgent",
-    title: "34,000 points expiring soon",
-    message: "Your Marriott Bonvoy points ($228 value) expire in 89 days. Book a stay or transfer to airline partners.",
-    valueAtRisk: 22800,
+    title: "45,000 miles expiring soon",
+    message: "Your United MileagePlus miles ($675 value) expire in 131 days. Book a flight or transfer to partners to keep them active.",
+    valueAtRisk: 67500,
     action: "View Options",
     timestamp: "2024-11-04T10:30:00Z",
   },
   {
     id: "2",
-    type: "bonus",
-    severity: "info",
-    title: "5X bonus activated on Chase Reserve",
-    message: "Earn 5X points on all Lyft rides through December 31st.",
-    action: "Learn More",
+    type: "expiration",
+    severity: "urgent",
+    title: "58,000 points expiring",
+    message: "Your Hilton Honors points ($290 value) are at risk. Stay active to prevent expiration.",
+    valueAtRisk: 29000,
+    action: "Book Stay",
     timestamp: "2024-11-03T15:20:00Z",
   },
   {
     id: "3",
     type: "recommendation",
     severity: "warning",
-    title: "Better card for groceries",
-    message: "Using Amex Gold instead of Citi Double Cash would earn you $84 more per year on groceries.",
+    title: "Better card for dining",
+    message: "Using Chase Freedom Flex instead of Sound Cashback would earn you 3x points on dining purchases.",
     action: "See Analysis",
     timestamp: "2024-11-02T09:15:00Z",
   },
@@ -208,10 +210,19 @@ export const mockAlerts: Alert[] = [
     id: "4",
     type: "limit",
     severity: "warning",
-    title: "Utilization above 30%",
-    message: "Your Chase Sapphire Reserve is at 35% utilization. Consider paying down balance to improve credit score.",
+    title: "Utilization above 25%",
+    message: "Your Citi Double Cash is at 27% utilization. Consider paying down balance to maintain optimal credit score.",
     action: "View Details",
     timestamp: "2024-11-01T14:45:00Z",
+  },
+  {
+    id: "5",
+    type: "bonus",
+    severity: "info",
+    title: "5X bonus on Chase Freedom Flex",
+    message: "Earn 5X points on travel bookings this quarter. Don't miss out!",
+    action: "Learn More",
+    timestamp: "2024-10-31T12:00:00Z",
   },
 ];
 
@@ -266,18 +277,18 @@ export const mockTransactions: Transaction[] = [
 export const mockGoals: Goal[] = [
   {
     id: "1",
-    name: "Europe Trip Summer 2025",
-    targetValue: 150000,
-    currentValue: 125340,
-    targetDate: "2025-06-01",
+    name: "Hawaii Vacation 2025",
+    targetValue: 100000, // $1,000
+    currentValue: 67500, // $675
+    targetDate: "2025-07-01",
     type: "travel",
   },
   {
     id: "2",
-    name: "Annual Cashback Goal",
-    targetValue: 200000,
-    currentValue: 84200,
-    targetDate: "2024-12-31",
+    name: "Holiday Shopping Fund",
+    targetValue: 50000, // $500
+    currentValue: 29000, // $290
+    targetDate: "2024-12-15",
     type: "cashback",
   },
 ];

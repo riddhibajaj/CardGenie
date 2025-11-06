@@ -17,6 +17,7 @@ import { mockUser, mockCards, mockLoyaltyAccounts, mockAlerts, mockGoals } from 
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import PortfolioOptimizationModal from "./PortfolioOptimizationModal";
+import FloatingChatButton from "./FloatingChatButton";
 import mockDataJson from "@/data/mockData.json";
 
 const Dashboard = () => {
@@ -45,9 +46,6 @@ const Dashboard = () => {
             <div className="flex items-center gap-3">
               <Button variant="outline" size="icon" onClick={() => navigate("/alerts")}>
                 <Bell className="h-5 w-5" />
-              </Button>
-              <Button variant="outline" size="icon" onClick={() => navigate("/chat")}>
-                <MessageSquare className="h-5 w-5" />
               </Button>
               <Button onClick={() => navigate("/profile")} className="bg-gradient-primary">
                 <User className="mr-2 h-4 w-4" />
@@ -108,79 +106,67 @@ const Dashboard = () => {
           </Card>
         </div>
 
-        {/* Smart Insights - Educational Section */}
-        <Card className="border-2 border-primary/20 bg-primary/5">
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
-                <Sparkles className="h-4 w-4 text-primary" />
-              </div>
-              <CardTitle>Smart Insights</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="p-4 rounded-lg bg-card border border-border">
-              <div className="flex items-start gap-3">
-                <TrendingUp className="h-5 w-5 text-success mt-0.5" />
-                <div className="flex-1">
-                  <p className="font-medium">Optimization Opportunity</p>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    You could earn an estimated $50 more this month by using the Smart Selector for grocery and dining purchases. Your Chase Sapphire card offers 3x points on dining.
-                  </p>
-                  <Button variant="outline" size="sm" className="mt-3" onClick={() => navigate("/selector")}>
-                    Use Smart Selector
-                  </Button>
-                </div>
-              </div>
-            </div>
-            <div className="p-4 rounded-lg bg-card border border-border">
-              <div className="flex items-start gap-3">
-                <Target className="h-5 w-5 text-primary mt-0.5" />
-                <div className="flex-1">
-                  <p className="font-medium">Goal Progress Update</p>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    You're 75% toward your "Summer Vacation Fund" goal! Keep using your travel cards to reach it faster.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
 
-        {/* Financial Health Metrics */}
+        {/* Key Metrics - 3 Equal Cards */}
         <div className="grid md:grid-cols-3 gap-6">
           <Card>
-            <CardHeader className="pb-3">
-              <CardDescription>Credit Score</CardDescription>
-              <CardTitle className="text-3xl text-primary">{mockUser.creditScore}</CardTitle>
+            <CardHeader>
+              <CardTitle>Active Goals</CardTitle>
+              <CardDescription>Your rewards targets</CardDescription>
             </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">Excellent • Updated Nov 1</p>
-              <p className="text-xs text-muted-foreground mt-2">
-                💡 Maintaining low utilization helps your score
-              </p>
+            <CardContent className="space-y-3">
+              {mockGoals.map((goal) => {
+                const progress = (goal.currentValue / goal.targetValue) * 100;
+                const daysLeft = Math.ceil((new Date(goal.targetDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
+                return (
+                  <div key={goal.id} className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <p className="font-medium text-sm">{goal.name}</p>
+                      <Badge variant="secondary">{Math.round(progress)}%</Badge>
+                    </div>
+                    <Progress value={progress} className="h-2" />
+                    <p className="text-xs text-muted-foreground">
+                      {formatCurrency(goal.currentValue)} of {formatCurrency(goal.targetValue)} • {daysLeft} days left
+                    </p>
+                  </div>
+                );
+              })}
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader className="pb-3">
-              <CardDescription>Credit Utilization</CardDescription>
-              <CardTitle className="text-3xl text-success">{mockUser.portfolioUtilization}%</CardTitle>
+          <Card className="cursor-pointer hover:border-primary transition-colors">
+            <CardHeader>
+              <CardTitle>Credit Health</CardTitle>
+              <CardDescription>Your credit score</CardDescription>
             </CardHeader>
             <CardContent>
-              <Progress value={mockUser.portfolioUtilization} className="h-2" />
-              <p className="text-xs text-muted-foreground mt-2">
-                ✓ Healthy (below 30% is ideal)
-              </p>
+              <div className="text-center">
+                <div className="text-5xl font-bold text-primary mb-2">{mockUser.creditScore}</div>
+                <p className="text-sm text-muted-foreground mb-4">Good • Updated Nov 5</p>
+                <div className="space-y-2 text-left">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Utilization</span>
+                    <span className="font-medium">{mockUser.portfolioUtilization}%</span>
+                  </div>
+                  <Progress value={mockUser.portfolioUtilization} className="h-2" />
+                  <p className="text-xs text-muted-foreground">
+                    ✓ Healthy (below 30% is ideal)
+                  </p>
+                </div>
+              </div>
             </CardContent>
           </Card>
 
           <Card className="border-2 border-warning bg-warning/5">
-            <CardHeader className="pb-3">
-              <CardDescription>Rewards Expiring Soon</CardDescription>
-              <CardTitle className="text-3xl text-warning">{formatCurrency(mockUser.expiringValueSoon)}</CardTitle>
+            <CardHeader>
+              <CardTitle className="text-warning">Expiration Alerts</CardTitle>
+              <CardDescription>Rewards expiring soon</CardDescription>
             </CardHeader>
             <CardContent>
+              <div className="text-center mb-4">
+                <div className="text-4xl font-bold text-warning mb-1">{formatCurrency(mockUser.expiringValueSoon)}</div>
+                <p className="text-sm text-muted-foreground">Total value at risk</p>
+              </div>
               <Button 
                 variant="outline" 
                 size="sm" 
@@ -194,121 +180,81 @@ const Dashboard = () => {
           </Card>
         </div>
 
-        {/* Active Goals - Visual Progress Trackers */}
+
+        {/* Your Cards - 2x2 Grid */}
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle>Your Rewards Goals</CardTitle>
-                <CardDescription>Track progress and stay motivated to reach your targets</CardDescription>
+                <CardTitle>Your Cards</CardTitle>
+                <CardDescription>Your credit card portfolio</CardDescription>
               </div>
-              <Button variant="outline" size="sm">
-                <Target className="mr-2 h-4 w-4" />
-                New Goal
-              </Button>
             </div>
           </CardHeader>
-          <CardContent className="space-y-6">
-            {mockGoals.map((goal) => {
-              const progress = (goal.currentValue / goal.targetValue) * 100;
-              const daysLeft = Math.ceil((new Date(goal.targetDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
-              return (
-                <div key={goal.id} className="p-4 rounded-lg border border-border hover:border-primary transition-colors">
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <p className="font-semibold text-lg">{goal.name}</p>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        {formatCurrency(goal.currentValue)} of {formatCurrency(goal.targetValue)} • {daysLeft} days left
-                      </p>
-                    </div>
-                    <Badge 
-                      variant={progress >= 75 ? "default" : "secondary"}
-                      className="text-lg px-3 py-1"
-                    >
-                      {Math.round(progress)}%
-                    </Badge>
-                  </div>
-                  <Progress value={progress} className="h-3 mb-3" />
-                  <div className="flex items-center justify-between">
-                    <p className="text-xs text-muted-foreground">
-                      {progress >= 75 ? "🎯 Almost there! Keep going!" : 
-                       progress >= 50 ? "💪 Great progress!" : 
-                       "🚀 You've got this!"}
-                    </p>
-                    <Button variant="outline" size="sm" onClick={() => navigate("/selector")}>
-                      Earn More
-                    </Button>
-                  </div>
-                </div>
-              );
-            })}
-          </CardContent>
-        </Card>
-
-        {/* Cards & Loyalty Programs - Combined Section */}
-        <div className="grid lg:grid-cols-2 gap-6">
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle>Your Cards</CardTitle>
-                  <CardDescription>Manage your credit card portfolio</CardDescription>
-                </div>
-                <Button variant="outline" size="sm">
-                  <CreditCard className="mr-2 h-4 w-4" />
-                  Add Card
-                </Button>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-3">
+          <CardContent>
+            <div className="grid md:grid-cols-2 gap-4">
               {mockCards.map((card) => (
                 <div 
                   key={card.id} 
-                  className="flex items-center justify-between p-3 rounded-lg border border-border hover:border-primary transition-colors cursor-pointer"
+                  className="p-4 rounded-lg border border-border hover:border-primary transition-colors cursor-pointer"
                   onClick={() => navigate(`/card/${card.id}`)}
                 >
-                  <div className="flex items-center gap-3">
-                    <div className={`h-12 w-20 rounded-lg bg-gradient-to-br ${card.color} flex items-center justify-center text-white font-mono text-xs`}>
-                      •••• {card.lastFour}
+                  <div className={`h-32 rounded-lg bg-gradient-to-br ${card.color} p-4 flex flex-col justify-between text-white mb-3`}>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-semibold">{card.issuer}</span>
+                      <span className="text-xs">{card.network}</span>
                     </div>
                     <div>
-                      <p className="font-semibold text-sm">{card.name}</p>
-                      <p className="text-xs text-muted-foreground">{card.rewardsProgram}</p>
+                      <div className="font-mono text-lg mb-1">•••• {card.lastFour}</div>
+                      <div className="text-xs opacity-90">{card.name}</div>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="font-semibold text-sm">{formatCurrency(card.currentBalance)}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {Math.round((card.currentBalance / card.creditLimit) * 100)}% used
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground">Balance</span>
+                      <span className="font-semibold">{formatCurrency(card.currentBalance)}</span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground">Limit</span>
+                      <span className="font-medium">{formatCurrency(card.creditLimit)}</span>
+                    </div>
+                    <Progress value={(card.currentBalance / card.creditLimit) * 100} className="h-2" />
+                    <p className="text-xs text-muted-foreground text-right">
+                      {Math.round((card.currentBalance / card.creditLimit) * 100)}% utilization
                     </p>
                   </div>
                 </div>
               ))}
-            </CardContent>
-          </Card>
+            </div>
+          </CardContent>
+        </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Loyalty Programs</CardTitle>
-              <CardDescription>Your points and miles balances</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
+        {/* Loyalty Programs */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Loyalty Programs</CardTitle>
+            <CardDescription>Your points and miles balances</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               {mockLoyaltyAccounts.map((account) => (
-                <div key={account.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/50 border border-border">
-                  <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-lg bg-background flex items-center justify-center">
-                      <span className="text-xl">{account.icon}</span>
+                <div key={account.id} className="p-4 rounded-lg bg-muted/50 border border-border">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="h-12 w-12 rounded-lg bg-background flex items-center justify-center">
+                      <span className="text-2xl">{account.icon}</span>
                     </div>
-                    <div>
+                    <div className="flex-1">
                       <p className="font-medium text-sm">{account.program}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {account.balance.toLocaleString()} pts
-                      </p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="font-semibold text-sm">{formatCurrency(account.valueCents)}</p>
-                    {account.daysUntilExpiration && account.daysUntilExpiration < 120 && (
+                  <div className="space-y-1">
+                    {account.balance > 0 && (
+                      <p className="text-xs text-muted-foreground">
+                        {account.balance.toLocaleString()} points
+                      </p>
+                    )}
+                    <p className="font-semibold text-lg">{formatCurrency(account.valueCents)}</p>
+                    {account.daysUntilExpiration && account.daysUntilExpiration < 150 && (
                       <Badge variant="destructive" className="text-xs">
                         {account.daysUntilExpiration}d left
                       </Badge>
@@ -316,9 +262,9 @@ const Dashboard = () => {
                   </div>
                 </div>
               ))}
-            </CardContent>
-          </Card>
-        </div>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Alerts & Opportunities - Actionable Insights */}
         <Card>
@@ -372,6 +318,8 @@ const Dashboard = () => {
         alerts={mockDataJson.alerts}
         optimizationRules={mockDataJson.optimizationRules}
       />
+
+      <FloatingChatButton />
     </div>
   );
 };

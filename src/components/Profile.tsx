@@ -91,14 +91,14 @@ const Profile = () => {
                         <Label htmlFor="phone">Phone Number</Label>
                         <div className="relative">
                           <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                          <Input id="phone" placeholder="+1 (555) 000-0000" className="pl-10" />
+                          <Input id="phone" defaultValue={mockUser.phone} className="pl-10" />
                         </div>
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="location">Location</Label>
                         <div className="relative">
                           <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                          <Input id="location" placeholder="City, State" className="pl-10" />
+                          <Input id="location" defaultValue={mockUser.location} className="pl-10" />
                         </div>
                       </div>
                     </div>
@@ -108,42 +108,11 @@ const Profile = () => {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle>Security</CardTitle>
-                    <CardDescription>Manage your password and security settings</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="current-password">Current Password</Label>
-                      <Input id="current-password" type="password" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="new-password">New Password</Label>
-                      <Input id="new-password" type="password" />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="confirm-password">Confirm New Password</Label>
-                      <Input id="confirm-password" type="password" />
-                    </div>
-                    <Button variant="outline">
-                      Update Password
-                    </Button>
-                  </CardContent>
-                </Card>
-              </div>
-
-              {/* Rewards Goals */}
-              <div className="space-y-6">
-                <Card>
-                  <CardHeader>
                     <div className="flex items-center justify-between">
                       <div>
                         <CardTitle>Rewards Goals</CardTitle>
                         <CardDescription>Track your redemption goals</CardDescription>
                       </div>
-                      <Button className="bg-gradient-primary" size="sm">
-                        <Plus className="mr-2 h-4 w-4" />
-                        New Goal
-                      </Button>
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -194,6 +163,7 @@ const Profile = () => {
                   Logout
                 </Button>
               </div>
+
             </div>
           </TabsContent>
 
@@ -225,10 +195,6 @@ const Profile = () => {
                           <p className="text-sm text-muted-foreground">{card.issuer} • {card.network}</p>
                         </div>
                       </div>
-                      <Button variant="outline" size="sm" onClick={() => navigate(`/card/${card.id}`)}>
-                        <Edit className="mr-2 h-4 w-4" />
-                        Manage
-                      </Button>
                     </div>
                     <div className="grid grid-cols-3 gap-4 text-sm">
                       <div>
@@ -295,10 +261,6 @@ const Profile = () => {
                           </p>
                         </div>
                       </div>
-                      <Button variant="outline" size="sm">
-                        <Edit className="mr-2 h-4 w-4" />
-                        Manage
-                      </Button>
                     </div>
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div>
