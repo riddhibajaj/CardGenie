@@ -27,11 +27,89 @@ const SmartSelector = () => {
     "Other"
   ];
 
+  const getRecommendationForCategory = (cat: string) => {
+    const lowerCat = cat.toLowerCase();
+    const amt = parseFloat(amount);
+    
+    if (lowerCat === "dining") {
+      return {
+        bestCard: mockCards[2], // Chase Freedom Flex
+        estimatedReward: Math.floor(amt * 3.5),
+        reasoning: "Chase Freedom Flex offers 3% cashback on dining purchases, making it your best option for restaurant spending.",
+        alternatives: [
+          { card: mockCards[3], reward: Math.floor(amt * 2), reason: "Citi Double Cash gives 2% flat cashback on all purchases" },
+          { card: mockCards[0], reward: Math.floor(amt * 1), reason: "Sound Rewards offers 1% on all purchases" }
+        ]
+      };
+    }
+    
+    if (lowerCat === "groceries") {
+      return {
+        bestCard: mockCards[2], // Chase Freedom Flex
+        estimatedReward: Math.floor(amt * 3.5),
+        reasoning: "Chase Freedom Flex offers rotating 5% categories which often include grocery stores, plus 3% on select merchants.",
+        alternatives: [
+          { card: mockCards[3], reward: Math.floor(amt * 2), reason: "Citi Double Cash provides consistent 2% cashback" },
+          { card: mockCards[1], reward: Math.floor(amt * 1.5), reason: "Sound Cashback gives 1.5% flat cashback" }
+        ]
+      };
+    }
+    
+    if (lowerCat === "travel") {
+      return {
+        bestCard: mockCards[2], // Chase Freedom Flex
+        estimatedReward: Math.floor(amt * 3.5),
+        reasoning: "Chase Freedom Flex earns 3% on travel and can transfer points to United and Hyatt for even more value.",
+        alternatives: [
+          { card: mockCards[3], reward: Math.floor(amt * 2), reason: "Citi Double Cash offers 2% on all travel purchases" },
+          { card: mockCards[0], reward: Math.floor(amt * 1), reason: "Sound Rewards provides 1% on travel" }
+        ]
+      };
+    }
+    
+    if (lowerCat === "gas") {
+      return {
+        bestCard: mockCards[3], // Citi Double Cash
+        estimatedReward: Math.floor(amt * 2),
+        reasoning: "Citi Double Cash is your best option for gas with a flat 2% cashback on all purchases.",
+        alternatives: [
+          { card: mockCards[1], reward: Math.floor(amt * 1.5), reason: "Sound Cashback gives 1.5% on all purchases" },
+          { card: mockCards[0], reward: Math.floor(amt * 1), reason: "Sound Rewards offers 1% points" }
+        ]
+      };
+    }
+    
+    if (lowerCat === "shopping" || lowerCat === "entertainment") {
+      return {
+        bestCard: mockCards[3], // Citi Double Cash
+        estimatedReward: Math.floor(amt * 2),
+        reasoning: "For general purchases, Citi Double Cash offers the best return with 2% cashback on everything.",
+        alternatives: [
+          { card: mockCards[1], reward: Math.floor(amt * 1.5), reason: "Sound Cashback provides 1.5% flat cashback" },
+          { card: mockCards[2], reward: Math.floor(amt * 3.5), reason: "Chase Freedom Flex if purchase qualifies for bonus category" }
+        ]
+      };
+    }
+    
+    // Default for "other" or unknown categories
+    return {
+      bestCard: mockCards[3], // Citi Double Cash
+      estimatedReward: Math.floor(amt * 2),
+      reasoning: "Citi Double Cash is your safest bet with 2% cashback on all purchases, ensuring you always get great value.",
+      alternatives: [
+        { card: mockCards[1], reward: Math.floor(amt * 1.5), reason: "Sound Cashback offers 1.5% on everything" },
+        { card: mockCards[0], reward: Math.floor(amt * 1), reason: "Sound Rewards gives 1% points on all spending" }
+      ]
+    };
+  };
+
   const handleAnalyze = () => {
     if (category && amount) {
       setShowResults(true);
     }
   };
+
+  const recommendation = category && amount ? getRecommendationForCategory(category) : mockRecommendation;
 
   const formatCurrency = (cents: number) => {
     return `$${(cents / 100).toFixed(2)}`;
@@ -126,21 +204,21 @@ const SmartSelector = () => {
                     <Badge className="bg-gradient-accent border-0">Best Choice</Badge>
                     <Award className="h-5 w-5 text-accent" />
                   </div>
-                  <CardTitle className="text-2xl mt-3">{mockRecommendation.bestCard.name}</CardTitle>
-                  <CardDescription>Estimated reward: {formatCurrency(mockRecommendation.estimatedReward)}</CardDescription>
+                  <CardTitle className="text-2xl mt-3">{recommendation.bestCard.name}</CardTitle>
+                  <CardDescription>Estimated reward: {formatCurrency(recommendation.estimatedReward)}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className={`h-32 rounded-lg bg-gradient-to-br ${mockRecommendation.bestCard.color} flex items-center justify-center`}>
+                  <div className={`h-32 rounded-lg bg-gradient-to-br ${recommendation.bestCard.color} flex items-center justify-center`}>
                     <div className="text-white text-center">
-                      <div className="font-mono text-lg mb-2">•••• {mockRecommendation.bestCard.lastFour}</div>
-                      <div className="text-sm opacity-90">{mockRecommendation.bestCard.network}</div>
+                      <div className="font-mono text-lg mb-2">•••• {recommendation.bestCard.lastFour}</div>
+                      <div className="text-sm opacity-90">{recommendation.bestCard.network}</div>
                     </div>
                   </div>
                   
                   <div className="space-y-2">
                     <div className="flex items-start gap-2">
                       <Sparkles className="h-5 w-5 text-accent mt-0.5 flex-shrink-0" />
-                      <p className="text-sm">{mockRecommendation.reasoning}</p>
+                      <p className="text-sm">{recommendation.reasoning}</p>
                     </div>
                   </div>
 
@@ -148,7 +226,7 @@ const SmartSelector = () => {
 
                   <div className="space-y-2">
                     <p className="font-semibold text-sm">Key Benefits:</p>
-                    {mockRecommendation.bestCard.categories.map((cat, idx) => (
+                    {recommendation.bestCard.categories.map((cat, idx) => (
                       <div key={idx} className="flex items-center justify-between text-sm">
                         <span className="text-muted-foreground">{cat.name}</span>
                         <Badge variant="secondary">{cat.rate}x points</Badge>
@@ -164,7 +242,7 @@ const SmartSelector = () => {
                   <CardTitle className="text-lg">Alternative Options</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  {mockRecommendation.alternatives.map((alt, idx) => (
+                  {recommendation.alternatives.map((alt, idx) => (
                     <div key={idx} className="p-3 rounded-lg border border-border hover:bg-muted transition-colors">
                       <div className="flex items-center justify-between mb-2">
                         <p className="font-semibold text-sm">{alt.card.name}</p>
@@ -186,10 +264,10 @@ const SmartSelector = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="text-3xl font-bold mb-2">
-                    {formatCurrency(mockRecommendation.estimatedReward)}
+                    {formatCurrency(recommendation.estimatedReward)}
                   </div>
                   <p className="text-sm text-white/80">
-                    You're earning {((mockRecommendation.estimatedReward / (parseFloat(amount) * 100)) * 100).toFixed(1)}% back on this purchase
+                    You're earning {((recommendation.estimatedReward / (parseFloat(amount || "0") * 100)) * 100).toFixed(1)}% back on this purchase
                   </p>
                 </CardContent>
               </Card>

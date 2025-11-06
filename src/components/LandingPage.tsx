@@ -32,8 +32,8 @@ const LandingPage = () => {
                 How it Works
               </a>
             </div>
-            <Button onClick={() => navigate("/dashboard")} className="bg-gradient-primary">
-              Try Demo
+            <Button onClick={() => navigate("/login")} className="bg-gradient-primary">
+              Get Started
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>

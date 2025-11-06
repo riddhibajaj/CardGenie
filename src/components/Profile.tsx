@@ -106,7 +106,7 @@ const Profile = () => {
                   </CardContent>
                 </Card>
 
-                <Card>
+                <Card id="rewards-goals">
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <div>

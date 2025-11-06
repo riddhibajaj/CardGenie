@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
+import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import SmartSelector from "./components/SmartSelector";
 import AlertsCenter from "./components/AlertsCenter";
@@ -23,6 +24,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/selector" element={<SmartSelector />} />
           <Route path="/alerts" element={<AlertsCenter />} />

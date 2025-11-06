@@ -111,28 +111,39 @@ const Dashboard = () => {
 
         {/* Key Metrics - 3 Equal Cards */}
         <div className="grid md:grid-cols-3 gap-6">
-          <Card>
+          <Card 
+            className="cursor-pointer transition-all hover:shadow-lg"
+            onClick={() => {
+              navigate("/profile");
+              setTimeout(() => {
+                const goalsSection = document.getElementById("rewards-goals");
+                if (goalsSection) {
+                  goalsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+              }, 100);
+            }}
+          >
             <CardHeader>
-              <CardTitle>Active Goals</CardTitle>
-              <CardDescription>Your rewards targets</CardDescription>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Target className="h-5 w-5 text-accent" />
+                Active Goals
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              {mockGoals.map((goal) => {
-                const progress = (goal.currentValue / goal.targetValue) * 100;
-                const daysLeft = Math.ceil((new Date(goal.targetDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
-                return (
-                  <div key={goal.id} className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <p className="font-medium text-sm">{goal.name}</p>
-                      <Badge variant="secondary">{Math.round(progress)}%</Badge>
-                    </div>
-                    <Progress value={progress} className="h-2" />
-                    <p className="text-xs text-muted-foreground">
-                      {formatCurrency(goal.currentValue)} of {formatCurrency(goal.targetValue)} • {daysLeft} days left
-                    </p>
-                  </div>
-                );
-              })}
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm font-medium">Vacation Fund</span>
+                  <span className="text-sm text-muted-foreground">$950 / $2,000</span>
+                </div>
+                <Progress value={47.5} className="h-2" />
+              </div>
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm font-medium">Annual Rewards Target</span>
+                  <span className="text-sm text-muted-foreground">$506 / $1,200</span>
+                </div>
+                <Progress value={42.17} className="h-2" />
+              </div>
             </CardContent>
           </Card>
 
@@ -202,7 +213,10 @@ const Dashboard = () => {
                 <div 
                   key={card.id} 
                   className="p-4 rounded-lg border border-border hover:border-primary transition-colors cursor-pointer"
-                  onClick={() => navigate(`/card/${card.id}`)}
+                  onClick={() => {
+                    navigate(`/card/${card.id}`);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
                 >
                   <div className={`h-32 rounded-lg bg-gradient-to-br ${card.color} p-4 flex flex-col justify-between text-white mb-3`}>
                     <div className="flex items-center justify-between">
