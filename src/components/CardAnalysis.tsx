@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { ArrowLeft, TrendingUp, Calendar, Target, AlertCircle } from "lucide-react";
+import ThemeToggle from "./ThemeToggle";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -86,7 +87,10 @@ const CardAnalysis = () => {
   const monthlySpending = getMonthlySpending();
 
   const totalSpent = cardTransactions.reduce((sum, t) => sum + t.amount, 0);
-  const totalRewards = cardTransactions.reduce((sum, t) => sum + t.rewardsEarned, 0);
+  const totalRewards = Math.min(
+    cardTransactions.reduce((sum, t) => sum + t.rewardsEarned, 0),
+    totalSpent
+  );
   const utilizationPercent = (card.currentBalance / card.creditLimit) * 100;
   const avgRewardRate = totalSpent > 0 ? (totalRewards / totalSpent) * 100 : 0;
 
@@ -163,6 +167,7 @@ const CardAnalysis = () => {
               Back to Dashboard
             </Button>
             <h1 className="text-xl font-bold">Card Analysis</h1>
+            <ThemeToggle />
           </div>
         </div>
       </header>
@@ -290,12 +295,16 @@ const CardAnalysis = () => {
                         className="text-xs"
                         tick={{ fill: 'hsl(var(--muted-foreground))' }}
                       />
-                      <YAxis 
+                       <YAxis 
                         className="text-xs"
                         tick={{ fill: 'hsl(var(--muted-foreground))' }}
                         tickFormatter={(value) => `$${(value / 100).toFixed(0)}`}
                       />
-                      <ChartTooltip content={<ChartTooltipContent />} />
+                      <ChartTooltip 
+                        content={<ChartTooltipContent 
+                          formatter={(value) => `$${(Number(value) / 100).toFixed(2)}`}
+                        />} 
+                      />
                       <Bar 
                         dataKey="amount" 
                         fill="hsl(var(--primary))" 

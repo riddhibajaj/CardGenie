@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, Zap, TrendingUp, Bell, Shield, CreditCard, Target } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import ThemeToggle from "./ThemeToggle";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -32,10 +33,13 @@ const LandingPage = () => {
                 How it Works
               </a>
             </div>
-            <Button onClick={() => navigate("/login")} className="bg-gradient-primary">
-              Get Started
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
+            <div className="flex items-center gap-3">
+              <ThemeToggle />
+              <Button onClick={() => navigate("/login")} className="bg-gradient-primary">
+                Get Started
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
           </div>
         </div>
       </nav>

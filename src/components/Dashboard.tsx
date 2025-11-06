@@ -19,6 +19,7 @@ import { useState } from "react";
 import PortfolioOptimizationModal from "./PortfolioOptimizationModal";
 import FloatingChatButton from "./FloatingChatButton";
 import CreditHealthModal from "./CreditHealthModal";
+import ThemeToggle from "./ThemeToggle";
 import mockDataJson from "@/data/mockData.json";
 
 const Dashboard = () => {
@@ -46,6 +47,7 @@ const Dashboard = () => {
               </div>
             </div>
             <div className="flex items-center gap-3">
+              <ThemeToggle />
               <Button variant="outline" size="icon" onClick={() => navigate("/alerts")}>
                 <Bell className="h-5 w-5" />
               </Button>
