@@ -61,20 +61,21 @@ const Dashboard = () => {
       <main className="container mx-auto px-4 py-8 space-y-8">
         {/* Hero Section - Financial Health Snapshot */}
         <div className="grid lg:grid-cols-2 gap-6">
-          <Card className="bg-gradient-primary text-white border-0">
+          <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
             <CardHeader>
-              <CardDescription className="text-white/80">Total Rewards Value</CardDescription>
-              <CardTitle className="text-4xl">{formatCurrency(mockLoyaltyAccounts.reduce((sum, acc) => sum + acc.valueCents, 0))}</CardTitle>
-              <p className="text-sm text-white/90 mt-2">Across all your cards and programs</p>
+              <CardDescription>Total Rewards Value</CardDescription>
+              <CardTitle className="text-4xl text-foreground">{formatCurrency(mockLoyaltyAccounts.reduce((sum, acc) => sum + acc.valueCents, 0))}</CardTitle>
+              <p className="text-sm text-muted-foreground mt-2">Across all your cards and programs</p>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-white/80">Optimization Score</span>
-                <span className="font-semibold text-lg">{mockUser.optimizationScore}%</span>
+                <span className="text-muted-foreground">Optimization Score</span>
+                <span className="font-semibold text-lg text-foreground">{mockUser.optimizationScore}%</span>
               </div>
-              <Progress value={mockUser.optimizationScore} className="h-2 bg-white/20" />
+              <Progress value={mockUser.optimizationScore} className="h-2" />
               <Button 
-                className="w-full bg-white text-primary hover:bg-gray-100 mt-4"
+                variant="outline"
+                className="w-full mt-4"
                 onClick={() => navigate("/card-analysis")}
               >
                 <Sparkles className="mr-2 h-4 w-4" />
@@ -83,22 +84,23 @@ const Dashboard = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-accent text-white border-0">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Sparkles className="h-6 w-6" />
+          <Card className="bg-gradient-accent border-0 shadow-glow-accent text-white overflow-hidden relative animate-scale-in">
+            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+            <CardHeader className="relative">
+              <CardTitle className="flex items-center gap-2 text-white">
+                <Sparkles className="h-6 w-6 animate-pulse" />
                 Smart Card Selector
               </CardTitle>
-              <CardDescription className="text-white/80">
+              <CardDescription className="text-white/90 font-medium">
                 Maximize rewards on every purchase
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <p className="text-sm text-white/90 mb-4">
+            <CardContent className="relative">
+              <p className="text-sm text-white/95 mb-4 leading-relaxed">
                 Get instant recommendations for which card to use based on your spending category, bonus offers, and rewards rates.
               </p>
               <Button 
-                className="w-full bg-white text-primary hover:bg-gray-100"
+                className="w-full bg-white/95 text-primary hover:bg-white hover:scale-105 transition-transform font-semibold shadow-lg"
                 onClick={() => navigate("/selector")}
               >
                 Start Smart Selector
@@ -258,25 +260,28 @@ const Dashboard = () => {
           <CardContent>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
               {mockLoyaltyAccounts.map((account) => (
-                <div key={account.id} className="p-4 rounded-lg bg-muted/50 border border-border">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="h-12 w-12 rounded-lg bg-background flex items-center justify-center">
-                      <span className="text-2xl">{account.icon}</span>
+                <div 
+                  key={account.id} 
+                  className="group p-5 rounded-xl bg-gradient-card border border-border hover:border-accent/50 transition-all duration-300 hover:shadow-lg hover:shadow-accent/10 cursor-pointer hover:-translate-y-1"
+                >
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="h-14 w-14 rounded-xl bg-accent/10 flex items-center justify-center group-hover:bg-accent/20 transition-colors ring-2 ring-accent/20">
+                      <span className="text-3xl">{account.icon}</span>
                     </div>
                     <div className="flex-1">
-                      <p className="font-medium text-sm">{account.program}</p>
+                      <p className="font-semibold text-sm text-foreground group-hover:text-accent transition-colors">{account.program}</p>
                     </div>
                   </div>
-                  <div className="space-y-1">
+                  <div className="space-y-2">
                     {account.balance > 0 && (
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-muted-foreground font-medium">
                         {account.balance.toLocaleString()} points
                       </p>
                     )}
-                    <p className="font-semibold text-lg">{formatCurrency(account.valueCents)}</p>
+                    <p className="font-bold text-xl text-foreground">{formatCurrency(account.valueCents)}</p>
                     {account.daysUntilExpiration && account.daysUntilExpiration < 150 && (
-                      <Badge variant="destructive" className="text-xs">
-                        {account.daysUntilExpiration}d left
+                      <Badge variant="destructive" className="text-xs font-semibold">
+                        ⏰ {account.daysUntilExpiration}d left
                       </Badge>
                     )}
                   </div>
