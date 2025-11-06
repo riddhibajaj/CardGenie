@@ -7,8 +7,8 @@ const FloatingChatButton = () => {
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
-      <div className="relative group">
-        <div className="absolute -top-12 right-0 bg-popover text-popover-foreground px-3 py-2 rounded-lg shadow-lg border border-border opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+      <div className="flex items-center gap-3 group">
+        <div className="bg-popover text-popover-foreground px-4 py-2 rounded-lg shadow-lg border border-border opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
           <p className="text-sm font-medium">Ask Genie</p>
         </div>
         <Button

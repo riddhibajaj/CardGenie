@@ -161,8 +161,8 @@ export const mockLoyaltyAccounts: LoyaltyAccount[] = [
     program: "Hilton Honors",
     balance: 58000,
     valueCents: 29000, // ~$290
-    expirationDate: null,
-    daysUntilExpiration: null,
+    expirationDate: "2024-12-20",
+    daysUntilExpiration: 45,
     icon: "🏢",
   },
   {

@@ -18,11 +18,13 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import PortfolioOptimizationModal from "./PortfolioOptimizationModal";
 import FloatingChatButton from "./FloatingChatButton";
+import CreditHealthModal from "./CreditHealthModal";
 import mockDataJson from "@/data/mockData.json";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [showPortfolioModal, setShowPortfolioModal] = useState(false);
+  const [showCreditHealthModal, setShowCreditHealthModal] = useState(false);
 
   const formatCurrency = (cents: number) => {
     return `$${(cents / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
@@ -134,7 +136,10 @@ const Dashboard = () => {
             </CardContent>
           </Card>
 
-          <Card className="cursor-pointer hover:border-primary transition-colors">
+          <Card 
+            className="cursor-pointer hover:border-primary transition-colors"
+            onClick={() => setShowCreditHealthModal(true)}
+          >
             <CardHeader>
               <CardTitle>Credit Health</CardTitle>
               <CardDescription>Your credit score</CardDescription>
@@ -317,6 +322,13 @@ const Dashboard = () => {
         cards={mockDataJson.cards}
         alerts={mockDataJson.alerts}
         optimizationRules={mockDataJson.optimizationRules}
+      />
+
+      <CreditHealthModal
+        isOpen={showCreditHealthModal}
+        onClose={() => setShowCreditHealthModal(false)}
+        creditScore={mockUser.creditScore}
+        portfolioUtilization={mockUser.portfolioUtilization}
       />
 
       <FloatingChatButton />
