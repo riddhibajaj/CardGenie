@@ -46,7 +46,7 @@ const Profile = () => {
                 <User className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold">Profile & Settings</h1>
+                <h1 className="text-xl font-bold">Profile</h1>
                 <p className="text-sm text-muted-foreground">Manage your account and preferences</p>
               </div>
             </div>
@@ -113,6 +113,10 @@ const Profile = () => {
                         <CardTitle>Rewards Goals</CardTitle>
                         <CardDescription>Track your redemption goals</CardDescription>
                       </div>
+                      <Button size="sm" className="bg-gradient-primary">
+                        <Target className="mr-2 h-4 w-4" />
+                        Add Goal
+                      </Button>
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-4">

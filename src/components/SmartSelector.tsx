@@ -49,8 +49,8 @@ const SmartSelector = () => {
         estimatedReward: Math.floor(amt * 3.5),
         reasoning: "Chase Freedom Flex offers rotating 5% categories which often include grocery stores, plus 3% on select merchants.",
         alternatives: [
-          { card: mockCards[3], reward: Math.floor(amt * 2), reason: "Citi Double Cash provides consistent 2% cashback" },
-          { card: mockCards[1], reward: Math.floor(amt * 1.5), reason: "Sound Cashback gives 1.5% flat cashback" }
+          { card: mockCards[1], reward: Math.floor(amt * 1.5), reason: "Sound Cashback gives 1.5% flat cashback" },
+          { card: mockCards[0], reward: Math.floor(amt * 1), reason: "Sound Rewards offers 1% on all purchases" }
         ]
       };
     }
@@ -62,7 +62,7 @@ const SmartSelector = () => {
         reasoning: "Chase Freedom Flex earns 3% on travel and can transfer points to United and Hyatt for even more value.",
         alternatives: [
           { card: mockCards[3], reward: Math.floor(amt * 2), reason: "Citi Double Cash offers 2% on all travel purchases" },
-          { card: mockCards[0], reward: Math.floor(amt * 1), reason: "Sound Rewards provides 1% on travel" }
+          { card: mockCards[1], reward: Math.floor(amt * 1.5), reason: "Sound Cashback provides 1.5% on all spending" }
         ]
       };
     }
@@ -79,25 +79,37 @@ const SmartSelector = () => {
       };
     }
     
-    if (lowerCat === "shopping" || lowerCat === "entertainment") {
+    if (lowerCat === "shopping") {
       return {
-        bestCard: mockCards[3], // Citi Double Cash
-        estimatedReward: Math.floor(amt * 2),
-        reasoning: "For general purchases, Citi Double Cash offers the best return with 2% cashback on everything.",
+        bestCard: mockCards[1], // Sound Cashback
+        estimatedReward: Math.floor(amt * 1.5),
+        reasoning: "Sound Cashback offers 1.5% flat cashback on all purchases, providing solid rewards for shopping.",
         alternatives: [
-          { card: mockCards[1], reward: Math.floor(amt * 1.5), reason: "Sound Cashback provides 1.5% flat cashback" },
-          { card: mockCards[2], reward: Math.floor(amt * 3.5), reason: "Chase Freedom Flex if purchase qualifies for bonus category" }
+          { card: mockCards[3], reward: Math.floor(amt * 2), reason: "Citi Double Cash provides 2% flat cashback" },
+          { card: mockCards[0], reward: Math.floor(amt * 1), reason: "Sound Rewards gives 1% points" }
+        ]
+      };
+    }
+    
+    if (lowerCat === "entertainment") {
+      return {
+        bestCard: mockCards[0], // Sound Rewards
+        estimatedReward: Math.floor(amt * 1),
+        reasoning: "Sound Rewards offers 1% points on all purchases, which you can redeem for entertainment and more.",
+        alternatives: [
+          { card: mockCards[3], reward: Math.floor(amt * 2), reason: "Citi Double Cash offers 2% cashback" },
+          { card: mockCards[1], reward: Math.floor(amt * 1.5), reason: "Sound Cashback provides 1.5% flat cashback" }
         ]
       };
     }
     
     // Default for "other" or unknown categories
     return {
-      bestCard: mockCards[3], // Citi Double Cash
-      estimatedReward: Math.floor(amt * 2),
-      reasoning: "Citi Double Cash is your safest bet with 2% cashback on all purchases, ensuring you always get great value.",
+      bestCard: mockCards[1], // Sound Cashback
+      estimatedReward: Math.floor(amt * 1.5),
+      reasoning: "Sound Cashback offers 1.5% flat cashback on all purchases, providing consistent value.",
       alternatives: [
-        { card: mockCards[1], reward: Math.floor(amt * 1.5), reason: "Sound Cashback offers 1.5% on everything" },
+        { card: mockCards[3], reward: Math.floor(amt * 2), reason: "Citi Double Cash offers 2% on everything" },
         { card: mockCards[0], reward: Math.floor(amt * 1), reason: "Sound Rewards gives 1% points on all spending" }
       ]
     };

@@ -15,7 +15,6 @@ const Login = () => {
           </div>
           <div>
             <CardTitle className="text-3xl font-bold">Welcome!</CardTitle>
-            <CardDescription className="text-lg mt-2">What's your name?</CardDescription>
           </div>
         </CardHeader>
         <CardContent className="space-y-6">

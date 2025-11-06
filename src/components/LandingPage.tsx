@@ -62,10 +62,10 @@ const LandingPage = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <Button 
               size="lg" 
-              onClick={() => navigate("/dashboard")}
+              onClick={() => navigate("/login")}
               className="bg-gradient-primary text-lg h-14 px-8 shadow-glow"
             >
-              Try Demo
+              Get Started
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </div>
@@ -94,7 +94,10 @@ const LandingPage = () => {
             <div className="inline-block bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium mb-6">
               The Difference
             </div>
-            <h2 className="text-4xl font-bold mb-8">Same Cards. Same Spending. Dramatically Different Results.</h2>
+            <h2 className="text-4xl font-bold mb-8">
+              Same Cards. Same Spending.<br />
+              Dramatically Different Results.
+            </h2>
           </div>
 
           <div className="max-w-4xl mx-auto">

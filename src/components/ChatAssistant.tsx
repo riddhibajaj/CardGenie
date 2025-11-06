@@ -13,12 +13,15 @@ interface Message {
   role: 'user' | 'assistant';
   content: string;
   timestamp: string;
+  isOptions?: boolean;
+  options?: string[];
 }
 
 const ChatAssistant = () => {
   const navigate = useNavigate();
   const [messages, setMessages] = useState<Message[]>(mockChatHistory);
   const [input, setInput] = useState("");
+  const [isThinking, setIsThinking] = useState(false);
 
   const quickPrompts = [
     "Which card should I use for groceries?",
@@ -27,17 +30,18 @@ const ChatAssistant = () => {
     "What's my best cashback card?",
   ];
 
-  const getAIResponse = (userInput: string): { response: string; followUp: string | null } => {
+  const getAIResponse = (userInput: string): { response: string; followUp: string | null; options?: string[] } => {
     const lowerInput = userInput.toLowerCase();
     
     if (lowerInput.includes("groceries") || lowerInput.includes("grocery")) {
       return {
         response: "For grocery purchases, your Chase Freedom Flex is currently your best option! It offers 3% cashback on dining and drugstores (which often includes grocery stores in rotating categories), plus it has no annual fee. With your current spending of $600 this month, you've already earned 2,100 points worth $21. I recommend using this card for groceries to maximize your rewards.",
-        followUp: "Would you like me to show you which card is best for dining purchases?"
+        followUp: "Would you like me to show you which card is best for dining purchases?",
+        options: ["Yes, show me the best card for dining", "No, I'm good for now"]
       };
     }
     
-    if (lowerInput.includes("best for dining") || lowerInput.includes("card is best for dining")) {
+    if (lowerInput.includes("best for dining") || lowerInput.includes("card is best for dining") || lowerInput.includes("yes") && messages[messages.length - 1]?.content.includes("dining purchases")) {
       return {
         response: "For dining, your Chase Freedom Flex is excellent with 3% cashback on dining purchases! You've already earned $21 worth of rewards this month using it. This card works at all restaurants, cafes, and food delivery services. Keep using it to maximize your dining rewards!",
         followUp: null
@@ -47,11 +51,12 @@ const ChatAssistant = () => {
     if (lowerInput.includes("expiring") || lowerInput.includes("expire")) {
       return {
         response: "You have rewards expiring soon! Your Hilton Honors points (58,000 points worth $290) will expire in 45 days. I recommend booking a hotel stay or transferring points to keep them active. Additionally, keep an eye on your Chase Freedom Flex rotating categories as those bonuses reset quarterly.",
-        followUp: "Would you like recommendations on how to use your Hilton points before they expire?"
+        followUp: "Would you like recommendations on how to use your Hilton points before they expire?",
+        options: ["Yes, give me recommendations", "No thanks"]
       };
     }
     
-    if (lowerInput.includes("recommendations on how to use") || lowerInput.includes("use your hilton")) {
+    if (lowerInput.includes("recommendations on how to use") || lowerInput.includes("use your hilton") || lowerInput.includes("yes") && messages[messages.length - 1]?.content.includes("Hilton points")) {
       return {
         response: "Great question! With 58,000 Hilton points, you have several excellent options: 1) Book 3-4 nights at mid-tier Hilton properties (Hampton Inn, Hilton Garden Inn), 2) Use them for a weekend luxury stay at a Conrad or Waldorf Astoria, 3) Transfer to airline partners if available, or 4) Redeem for experiences through Hilton Honors. I recommend booking within the next 30 days to ensure your points don't expire!",
         followUp: null
@@ -61,11 +66,12 @@ const ChatAssistant = () => {
     if (lowerInput.includes("travel")) {
       return {
         response: "For travel rewards, you're in a great position! Your United MileagePlus has 45,000 miles (worth ~$675) and World of Hyatt has 32,000 points (worth ~$640). Combined, that's over $1,300 in travel value! Your Chase Freedom Flex also earns bonus points on travel purchases. Consider booking flights with United and hotels with Hyatt to maximize your existing points.",
-        followUp: "Would you like help planning a trip using your points?"
+        followUp: "Would you like help planning a trip using your points?",
+        options: ["Yes, help me plan a trip", "Not right now"]
       };
     }
     
-    if (lowerInput.includes("help planning") || lowerInput.includes("plan") && lowerInput.includes("trip")) {
+    if (lowerInput.includes("help planning") || lowerInput.includes("plan") && lowerInput.includes("trip") || lowerInput.includes("yes") && messages[messages.length - 1]?.content.includes("planning a trip")) {
       return {
         response: "Perfect! Here's what you can do with your points: Use your 45,000 United miles for round-trip flights to Hawaii, Caribbean, or Mexico, then use 32,000 Hyatt points for 4-5 nights at mid-tier properties. This combination gives you a complete vacation valued at $1,300+! Popular destinations include: Maui (Hyatt Regency), Cancun (Hyatt Ziva), or Puerto Rico (Hyatt House). Book 2-3 months in advance for best availability.",
         followUp: null
@@ -75,11 +81,12 @@ const ChatAssistant = () => {
     if (lowerInput.includes("cashback") || lowerInput.includes("cash back")) {
       return {
         response: "Your best cashback card is the Citi Double Cash! It offers a flat 2% cashback on all purchases (1% when you buy, 1% when you pay). You've earned $8 this month with $400 in spending. This is perfect for purchases that don't fall into bonus categories. Your Sound Credit Union Cashback also gives you 1.5% flat cashback with no annual fee.",
-        followUp: "Would you like tips on optimizing your cashback across all your cards?"
+        followUp: "Would you like tips on optimizing your cashback across all your cards?",
+        options: ["Yes, give me optimization tips", "No, I'm all set"]
       };
     }
 
-    if (lowerInput.includes("tips on optimizing") || lowerInput.includes("optimize") && lowerInput.includes("cashback")) {
+    if (lowerInput.includes("tips on optimizing") || lowerInput.includes("optimize") && lowerInput.includes("cashback") || lowerInput.includes("yes") && messages[messages.length - 1]?.content.includes("optimizing your cashback")) {
       return {
         response: "Here's your optimal cashback strategy: 1) Use Chase Freedom Flex for dining & groceries (3% back = $21/month on $600 spend), 2) Use Citi Double Cash for everything else (2% back = $8/month on $400 spend), 3) Use Sound Cashback for any purchases where you need backup (1.5% flat). Combined, you're earning about $34.70/month in rewards. To maximize further, watch for Chase Freedom Flex rotating 5% categories!",
         followUp: null
@@ -155,9 +162,13 @@ const ChatAssistant = () => {
     const currentInput = input;
     setInput("");
 
-    // Simulate AI response
+    // Show thinking animation
+    setIsThinking(true);
+
+    // Simulate AI response with thinking delay
     setTimeout(() => {
-      const { response, followUp } = getAIResponse(currentInput);
+      setIsThinking(false);
+      const { response, followUp, options } = getAIResponse(currentInput);
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
@@ -166,7 +177,7 @@ const ChatAssistant = () => {
       };
       setMessages(prev => [...prev, aiMessage]);
 
-      // Add follow-up question after a short delay if not answering a follow-up
+      // Add follow-up question with options after a short delay
       if (followUp) {
         setTimeout(() => {
           const followUpMessage: Message = {
@@ -174,6 +185,8 @@ const ChatAssistant = () => {
             role: 'assistant',
             content: followUp,
             timestamp: new Date().toISOString(),
+            isOptions: !!options,
+            options: options
           };
           setMessages(prev => [...prev, followUpMessage]);
         }, 800);
@@ -223,15 +236,35 @@ const ChatAssistant = () => {
                     </AvatarFallback>
                   </Avatar>
                 )}
-                <Card className={`max-w-[80%] ${
-                  message.role === 'user' 
-                    ? 'bg-gradient-primary text-white border-0' 
-                    : 'bg-card'
-                }`}>
-                  <CardContent className="p-4">
-                    <p className="text-sm leading-relaxed">{message.content}</p>
-                  </CardContent>
-                </Card>
+                <div className="max-w-[80%] space-y-2">
+                  <Card className={`${
+                    message.role === 'user' 
+                      ? 'bg-gradient-primary text-white border-0' 
+                      : 'bg-card'
+                  }`}>
+                    <CardContent className="p-4">
+                      <p className="text-sm leading-relaxed">{message.content}</p>
+                    </CardContent>
+                  </Card>
+                  {message.isOptions && message.options && (
+                    <div className="flex flex-col gap-2">
+                      {message.options.map((option, idx) => (
+                        <Button
+                          key={idx}
+                          variant="outline"
+                          size="sm"
+                          className="justify-start text-left"
+                          onClick={() => {
+                            setInput(option);
+                            handleSend();
+                          }}
+                        >
+                          {option}
+                        </Button>
+                      ))}
+                    </div>
+                  )}
+                </div>
                 {message.role === 'user' && (
                   <Avatar className="h-8 w-8 bg-primary">
                     <AvatarFallback className="bg-transparent text-white">RB</AvatarFallback>
@@ -239,6 +272,24 @@ const ChatAssistant = () => {
                 )}
               </div>
             ))}
+            {isThinking && (
+              <div className="flex gap-3 justify-start">
+                <Avatar className="h-8 w-8 bg-gradient-accent">
+                  <AvatarFallback className="bg-transparent text-white">
+                    <Sparkles className="h-4 w-4" />
+                  </AvatarFallback>
+                </Avatar>
+                <Card className="bg-card">
+                  <CardContent className="p-4">
+                    <div className="flex gap-1">
+                      <span className="animate-bounce" style={{ animationDelay: '0ms' }}>.</span>
+                      <span className="animate-bounce" style={{ animationDelay: '150ms' }}>.</span>
+                      <span className="animate-bounce" style={{ animationDelay: '300ms' }}>.</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
           </div>
         </ScrollArea>
 

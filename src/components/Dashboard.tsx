@@ -215,7 +215,7 @@ const Dashboard = () => {
                   className="p-4 rounded-lg border border-border hover:border-primary transition-colors cursor-pointer"
                   onClick={() => {
                     navigate(`/card/${card.id}`);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
                   }}
                 >
                   <div className={`h-32 rounded-lg bg-gradient-to-br ${card.color} p-4 flex flex-col justify-between text-white mb-3`}>
