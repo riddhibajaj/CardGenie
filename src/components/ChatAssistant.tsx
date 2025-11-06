@@ -19,7 +19,13 @@ interface Message {
 
 const ChatAssistant = () => {
   const navigate = useNavigate();
-  const [messages, setMessages] = useState<Message[]>(mockChatHistory);
+  const initialMessage: Message = {
+    id: "initial",
+    role: "assistant",
+    content: "Hi Riddhi! 👋 I'm your AI assistant. I can help you maximize your credit card rewards, track expiring points, and recommend the best card for every purchase. How can I help you today?",
+    timestamp: new Date().toISOString()
+  };
+  const [messages, setMessages] = useState<Message[]>([initialMessage]);
   const [input, setInput] = useState("");
   const [isThinking, setIsThinking] = useState(false);
 

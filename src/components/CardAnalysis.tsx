@@ -63,41 +63,80 @@ const CardAnalysis = () => {
     return acc;
   }, [] as Array<{ category: string; amount: number; rewards: number }>);
 
-  // Calculate monthly spending trend
-  const monthlySpending = [
-    { month: "Jul", amount: 4200, rewards: 168 },
-    { month: "Aug", amount: 5100, rewards: 204 },
-    { month: "Sep", amount: 3800, rewards: 152 },
-    { month: "Oct", amount: 4900, rewards: 196 },
-    { month: "Nov", amount: cardTransactions.reduce((sum, t) => sum + t.amount, 0), rewards: cardTransactions.reduce((sum, t) => sum + t.rewardsEarned, 0) },
-  ];
+  // Calculate monthly spending trend - with specific data for Citi Double Cash
+  const getMonthlySpending = () => {
+    if (card.id === "4") { // Citi Double Cash
+      return [
+        { month: "Jul", amount: 3800, rewards: 76 },
+        { month: "Aug", amount: 4200, rewards: 84 },
+        { month: "Sep", amount: 5100, rewards: 102 },
+        { month: "Oct", amount: 4500, rewards: 90 },
+        { month: "Nov", amount: cardTransactions.reduce((sum, t) => sum + t.amount, 0), rewards: cardTransactions.reduce((sum, t) => sum + t.rewardsEarned, 0) },
+      ];
+    }
+    return [
+      { month: "Jul", amount: 4200, rewards: 168 },
+      { month: "Aug", amount: 5100, rewards: 204 },
+      { month: "Sep", amount: 3800, rewards: 152 },
+      { month: "Oct", amount: 4900, rewards: 196 },
+      { month: "Nov", amount: cardTransactions.reduce((sum, t) => sum + t.amount, 0), rewards: cardTransactions.reduce((sum, t) => sum + t.rewardsEarned, 0) },
+    ];
+  };
+
+  const monthlySpending = getMonthlySpending();
 
   const totalSpent = cardTransactions.reduce((sum, t) => sum + t.amount, 0);
   const totalRewards = cardTransactions.reduce((sum, t) => sum + t.rewardsEarned, 0);
   const utilizationPercent = (card.currentBalance / card.creditLimit) * 100;
   const avgRewardRate = totalSpent > 0 ? (totalRewards / totalSpent) * 100 : 0;
 
-  // Optimization opportunities
-  const optimizationTips = [
-    {
-      type: "warning",
-      title: "Underutilized Category",
-      description: `You spent ${formatCurrency(890)} on gas this month. Consider using a gas-specific card for better rewards.`,
-      potential: 45,
-    },
-    {
-      type: "info",
-      title: "Bonus Category Active",
-      description: `${card.categories[0]?.name} category is earning ${card.categories[0]?.rate}X points. Maximize this before it expires.`,
-      potential: 120,
-    },
-    {
-      type: "success",
-      title: "Optimal Usage",
-      description: `You're maximizing rewards on ${card.categories[0]?.name} purchases. Great job!`,
-      potential: 0,
-    },
-  ];
+  // Optimization opportunities - specific tips per card
+  const getOptimizationTips = () => {
+    if (card.id === "4") { // Citi Double Cash
+      return [
+        {
+          type: "success",
+          title: "Excellent All-Around Card",
+          description: "You're earning a flat 2% cashback on all purchases with this card. Perfect for everyday spending that doesn't fall into bonus categories!",
+          potential: 0,
+        },
+        {
+          type: "info",
+          title: "Maximize Bonus Categories First",
+          description: "For groceries and dining, consider using Chase Freedom Flex (3% back) instead. You could earn an extra $5-10/month on those categories.",
+          potential: 75,
+        },
+        {
+          type: "warning",
+          title: "Utilization Watch",
+          description: `At ${Math.round(utilizationPercent)}% utilization, you're close to the 30% threshold. Consider paying down balance before the statement closes.`,
+          potential: 0,
+        },
+      ];
+    }
+    return [
+      {
+        type: "warning",
+        title: "Underutilized Category",
+        description: `You spent ${formatCurrency(890)} on gas this month. Consider using a gas-specific card for better rewards.`,
+        potential: 45,
+      },
+      {
+        type: "info",
+        title: "Bonus Category Active",
+        description: `${card.categories[0]?.name} category is earning ${card.categories[0]?.rate}X points. Maximize this before it expires.`,
+        potential: 120,
+      },
+      {
+        type: "success",
+        title: "Optimal Usage",
+        description: `You're maximizing rewards on ${card.categories[0]?.name} purchases. Great job!`,
+        potential: 0,
+      },
+    ];
+  };
+
+  const optimizationTips = getOptimizationTips();
 
   const chartConfig = {
     amount: {

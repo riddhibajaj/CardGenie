@@ -124,26 +124,27 @@ const Dashboard = () => {
             }}
           >
             <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2">
                 <Target className="h-5 w-5 text-accent" />
                 Active Goals
               </CardTitle>
+              <CardDescription>Your reward targets</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm font-medium">Vacation Fund</span>
-                  <span className="text-sm text-muted-foreground">$950 / $2,000</span>
-                </div>
-                <Progress value={47.5} className="h-2" />
-              </div>
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm font-medium">Annual Rewards Target</span>
-                  <span className="text-sm text-muted-foreground">$506 / $1,200</span>
-                </div>
-                <Progress value={42.17} className="h-2" />
-              </div>
+              {mockGoals.map((goal) => {
+                const progress = (goal.currentValue / goal.targetValue) * 100;
+                return (
+                  <div key={goal.id}>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm font-medium">{goal.name}</span>
+                      <span className="text-sm text-muted-foreground">
+                        {formatCurrency(goal.currentValue)} / {formatCurrency(goal.targetValue)}
+                      </span>
+                    </div>
+                    <Progress value={progress} className="h-2" />
+                  </div>
+                );
+              })}
             </CardContent>
           </Card>
 

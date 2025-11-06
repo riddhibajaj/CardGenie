@@ -95,7 +95,7 @@ const LandingPage = () => {
               The Difference
             </div>
             <h2 className="text-4xl font-bold mb-8">
-              Same Cards. Same Spending.<br />
+              <span className="font-normal">Same Cards. Same Spending.</span><br />
               Dramatically Different Results.
             </h2>
           </div>

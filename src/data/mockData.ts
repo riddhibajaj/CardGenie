@@ -272,6 +272,52 @@ export const mockTransactions: Transaction[] = [
     cardId: "3",
     rewardsEarned: 110,
   },
+  // Citi Double Cash transactions
+  {
+    id: "6",
+    date: "2024-11-04",
+    merchant: "Target",
+    category: "Shopping",
+    amount: 7500,
+    cardId: "4",
+    rewardsEarned: 150,
+  },
+  {
+    id: "7",
+    date: "2024-11-03",
+    merchant: "Chipotle",
+    category: "Dining",
+    amount: 1850,
+    cardId: "4",
+    rewardsEarned: 37,
+  },
+  {
+    id: "8",
+    date: "2024-11-02",
+    merchant: "Delta Airlines",
+    category: "Travel",
+    amount: 32000,
+    cardId: "4",
+    rewardsEarned: 640,
+  },
+  {
+    id: "9",
+    date: "2024-11-01",
+    merchant: "Walgreens",
+    category: "Pharmacy",
+    amount: 4500,
+    cardId: "4",
+    rewardsEarned: 90,
+  },
+  {
+    id: "10",
+    date: "2024-10-31",
+    merchant: "Netflix",
+    category: "Streaming",
+    amount: 1599,
+    cardId: "4",
+    rewardsEarned: 32,
+  },
 ];
 
 export const mockGoals: Goal[] = [
