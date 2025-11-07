@@ -203,27 +203,33 @@ const Dashboard = () => {
 
           <Card 
             className="cursor-pointer hover:border-primary transition-colors"
-            onClick={() => setShowCreditHealthModal(true)}
+            onClick={() => connectedCardIds.length > 0 && setShowCreditHealthModal(true)}
           >
             <CardHeader>
               <CardTitle>Credit Health</CardTitle>
               <CardDescription>Your credit score</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-center">
-                <div className="text-5xl font-bold text-primary mb-2">{mockUser.creditScore}</div>
-                <p className="text-sm text-muted-foreground mb-4">Good • Updated Nov 5</p>
-                <div className="space-y-2 text-left">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">Utilization</span>
-                    <span className="font-medium">{mockUser.portfolioUtilization}%</span>
-                  </div>
-                  <Progress value={mockUser.portfolioUtilization} className="h-2" />
-                  <p className="text-xs text-muted-foreground">
-                    ✓ Healthy (below 30% is ideal)
-                  </p>
+              {connectedCardIds.length === 0 ? (
+                <div className="text-center py-8">
+                  <p className="text-muted-foreground text-sm">Connect cards to track credit health</p>
                 </div>
-              </div>
+              ) : (
+                <div className="text-center">
+                  <div className="text-5xl font-bold text-primary mb-2">{mockUser.creditScore}</div>
+                  <p className="text-sm text-muted-foreground mb-4">Good • Updated Nov 5</p>
+                  <div className="space-y-2 text-left">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground">Utilization</span>
+                      <span className="font-medium">{mockUser.portfolioUtilization}%</span>
+                    </div>
+                    <Progress value={mockUser.portfolioUtilization} className="h-2" />
+                    <p className="text-xs text-muted-foreground">
+                      ✓ Healthy (below 30% is ideal)
+                    </p>
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
 
@@ -233,19 +239,27 @@ const Dashboard = () => {
               <CardDescription>Rewards expiring soon</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-center mb-4">
-                <div className="text-4xl font-bold text-warning mb-1">{formatCurrency(mockUser.expiringValueSoon)}</div>
-                <p className="text-sm text-muted-foreground">Total value at risk</p>
-              </div>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="w-full border-warning text-warning hover:bg-warning hover:text-white"
-                onClick={() => navigate("/alerts")}
-              >
-                <AlertTriangle className="mr-2 h-4 w-4" />
-                View Alerts
-              </Button>
+              {connectedCardIds.length === 0 && displayedLoyaltyPrograms.length === 0 ? (
+                <div className="text-center py-8">
+                  <p className="text-muted-foreground text-sm">Connect accounts to track expirations</p>
+                </div>
+              ) : (
+                <>
+                  <div className="text-center mb-4">
+                    <div className="text-4xl font-bold text-warning mb-1">{formatCurrency(mockUser.expiringValueSoon)}</div>
+                    <p className="text-sm text-muted-foreground">Total value at risk</p>
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="w-full border-warning text-warning hover:bg-warning hover:text-white"
+                    onClick={() => navigate("/alerts")}
+                  >
+                    <AlertTriangle className="mr-2 h-4 w-4" />
+                    View Alerts
+                  </Button>
+                </>
+              )}
             </CardContent>
           </Card>
         </div>
@@ -262,43 +276,55 @@ const Dashboard = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="grid md:grid-cols-2 gap-4">
-              {displayedCards.map((card) => (
-                <div 
-                  key={card.id} 
-                  className="p-4 rounded-lg border border-border hover:border-primary transition-colors cursor-pointer"
-                  onClick={() => {
-                    navigate(`/card/${card.id}`);
-                    setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
-                  }}
+            {displayedCards.length === 0 ? (
+              <div className="text-center py-8">
+                <p className="text-muted-foreground mb-4">No bank cards connected yet</p>
+                <Button 
+                  variant="outline"
+                  onClick={() => navigate("/profile")}
                 >
-                  <div className={`h-32 rounded-lg bg-gradient-to-br ${card.color} p-4 flex flex-col justify-between text-white mb-3`}>
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-semibold">{card.issuer}</span>
-                      <span className="text-xs">{card.network}</span>
+                  Add Cards
+                </Button>
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-2 gap-4">
+                {displayedCards.map((card) => (
+                  <div 
+                    key={card.id} 
+                    className="p-4 rounded-lg border border-border hover:border-primary transition-colors cursor-pointer"
+                    onClick={() => {
+                      navigate(`/card/${card.id}`);
+                      setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
+                    }}
+                  >
+                    <div className={`h-32 rounded-lg bg-gradient-to-br ${card.color} p-4 flex flex-col justify-between text-white mb-3`}>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-semibold">{card.issuer}</span>
+                        <span className="text-xs">{card.network}</span>
+                      </div>
+                      <div>
+                        <div className="font-mono text-lg mb-1">•••• {card.lastFour}</div>
+                        <div className="text-xs opacity-90">{card.name}</div>
+                      </div>
                     </div>
-                    <div>
-                      <div className="font-mono text-lg mb-1">•••• {card.lastFour}</div>
-                      <div className="text-xs opacity-90">{card.name}</div>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-muted-foreground">Balance</span>
+                        <span className="font-semibold">{formatCurrency(card.currentBalance)}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-muted-foreground">Limit</span>
+                        <span className="font-medium">{formatCurrency(card.creditLimit)}</span>
+                      </div>
+                      <Progress value={(card.currentBalance / card.creditLimit) * 100} className="h-2" />
+                      <p className="text-xs text-muted-foreground text-right">
+                        {Math.round((card.currentBalance / card.creditLimit) * 100)}% utilization
+                      </p>
                     </div>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Balance</span>
-                      <span className="font-semibold">{formatCurrency(card.currentBalance)}</span>
-                    </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-muted-foreground">Limit</span>
-                      <span className="font-medium">{formatCurrency(card.creditLimit)}</span>
-                    </div>
-                    <Progress value={(card.currentBalance / card.creditLimit) * 100} className="h-2" />
-                    <p className="text-xs text-muted-foreground text-right">
-                      {Math.round((card.currentBalance / card.creditLimit) * 100)}% utilization
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
 
@@ -368,32 +394,38 @@ const Dashboard = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {mockAlerts.slice(0, 3).map((alert) => (
-                <div key={alert.id} className="p-4 rounded-lg border border-border hover:border-primary transition-colors">
-                  <div className="flex items-start gap-3 mb-3">
-                    <div className={`mt-0.5 ${
-                      alert.severity === 'urgent' ? 'text-destructive' :
-                      alert.severity === 'warning' ? 'text-warning' :
-                      'text-accent'
-                    }`}>
-                      {alert.severity === 'urgent' ? <AlertTriangle className="h-5 w-5" /> :
-                       alert.severity === 'warning' ? <Bell className="h-5 w-5" /> :
-                       <Sparkles className="h-5 w-5" />}
+            {connectedCardIds.length === 0 && displayedLoyaltyPrograms.length === 0 ? (
+              <div className="text-center py-8">
+                <p className="text-muted-foreground text-sm">Connect accounts to see alerts and opportunities</p>
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {mockAlerts.slice(0, 3).map((alert) => (
+                  <div key={alert.id} className="p-4 rounded-lg border border-border hover:border-primary transition-colors">
+                    <div className="flex items-start gap-3 mb-3">
+                      <div className={`mt-0.5 ${
+                        alert.severity === 'urgent' ? 'text-destructive' :
+                        alert.severity === 'warning' ? 'text-warning' :
+                        'text-accent'
+                      }`}>
+                        {alert.severity === 'urgent' ? <AlertTriangle className="h-5 w-5" /> :
+                         alert.severity === 'warning' ? <Bell className="h-5 w-5" /> :
+                         <Sparkles className="h-5 w-5" />}
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-medium text-sm">{alert.title}</p>
+                        <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{alert.message}</p>
+                      </div>
                     </div>
-                    <div className="flex-1">
-                      <p className="font-medium text-sm">{alert.title}</p>
-                      <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{alert.message}</p>
-                    </div>
+                    {alert.severity === 'urgent' && (
+                      <Button size="sm" variant="outline" className="w-full border-destructive text-destructive hover:bg-destructive hover:text-white">
+                        Take Action
+                      </Button>
+                    )}
                   </div>
-                  {alert.severity === 'urgent' && (
-                    <Button size="sm" variant="outline" className="w-full border-destructive text-destructive hover:bg-destructive hover:text-white">
-                      Take Action
-                    </Button>
-                  )}
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
       </main>
