@@ -8,6 +8,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Progress } from "@/components/ui/progress";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { 
   ArrowLeft, 
   User, 
@@ -20,16 +30,20 @@ import {
   Phone,
   MapPin,
   LogOut,
-  Gift
+  Gift,
+  Trash2
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { mockUser, mockCards, mockGoals, mockLoyaltyAccounts } from "@/data/mockData";
 import { PlaidConnectModal } from "./PlaidConnectModal";
+import { useToast } from "@/hooks/use-toast";
 
 const Profile = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [plaidModalOpen, setPlaidModalOpen] = useState(false);
   const [connectedCardIds, setConnectedCardIds] = useState<string[]>(mockCards.map(c => c.id));
+  const [cardToDelete, setCardToDelete] = useState<string | null>(null);
 
   const formatCurrency = (cents: number) => {
     return `$${(cents / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
@@ -37,6 +51,18 @@ const Profile = () => {
 
   const handleCardsConnected = (newCardIds: string[]) => {
     setConnectedCardIds(prev => [...new Set([...prev, ...newCardIds])]);
+  };
+
+  const handleDeleteCard = () => {
+    if (cardToDelete) {
+      const cardName = mockCards.find(c => c.id === cardToDelete)?.name || "Card";
+      setConnectedCardIds(prev => prev.filter(id => id !== cardToDelete));
+      toast({
+        title: "Card removed successfully",
+        description: `${cardName} has been removed from your portfolio.`,
+      });
+      setCardToDelete(null);
+    }
   };
 
   const displayedCards = mockCards.filter(card => connectedCardIds.includes(card.id));
@@ -200,7 +226,15 @@ const Profile = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 {displayedCards.map((card) => (
-                  <div key={card.id} className="p-4 rounded-lg border border-border">
+                  <div key={card.id} className="p-4 rounded-lg border border-border relative group">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive hover:bg-destructive/10"
+                      onClick={() => setCardToDelete(card.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-4">
                         <div className={`h-16 w-24 rounded-lg bg-gradient-to-br ${card.color} flex items-center justify-center text-white font-mono text-sm`}>
@@ -317,6 +351,44 @@ const Profile = () => {
         onCardsConnected={handleCardsConnected}
         connectedCardIds={connectedCardIds}
       />
+
+      <AlertDialog open={!!cardToDelete} onOpenChange={() => setCardToDelete(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <span className="text-destructive">⚠️</span>
+              Remove Card?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="space-y-3">
+              {cardToDelete && (
+                <>
+                  <p>Are you sure you want to remove:</p>
+                  <p className="font-semibold text-foreground">
+                    {mockCards.find(c => c.id === cardToDelete)?.name} (••{mockCards.find(c => c.id === cardToDelete)?.lastFour})
+                  </p>
+                  <p className="text-sm">This will:</p>
+                  <ul className="text-sm list-disc pl-5 space-y-1">
+                    <li>Remove card from your portfolio</li>
+                    <li>Delete all transaction history</li>
+                    <li>Update optimization calculations</li>
+                    <li>Remove from card analysis</li>
+                  </ul>
+                  <p className="font-semibold text-destructive">This action cannot be undone.</p>
+                </>
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteCard}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Remove Card
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
