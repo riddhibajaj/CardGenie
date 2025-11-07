@@ -24,13 +24,22 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { mockUser, mockCards, mockGoals, mockLoyaltyAccounts } from "@/data/mockData";
+import { PlaidConnectModal } from "./PlaidConnectModal";
 
 const Profile = () => {
   const navigate = useNavigate();
+  const [plaidModalOpen, setPlaidModalOpen] = useState(false);
+  const [connectedCardIds, setConnectedCardIds] = useState<string[]>(mockCards.map(c => c.id));
 
   const formatCurrency = (cents: number) => {
     return `$${(cents / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
   };
+
+  const handleCardsConnected = (newCardIds: string[]) => {
+    setConnectedCardIds(prev => [...new Set([...prev, ...newCardIds])]);
+  };
+
+  const displayedCards = mockCards.filter(card => connectedCardIds.includes(card.id));
 
   return (
     <div className="min-h-screen bg-background">
@@ -180,14 +189,17 @@ const Profile = () => {
                     <CardTitle>Linked Credit Cards</CardTitle>
                     <CardDescription>Manage your connected credit cards</CardDescription>
                   </div>
-                  <Button className="bg-gradient-primary">
+                  <Button 
+                    className="bg-gradient-primary" 
+                    onClick={() => setPlaidModalOpen(true)}
+                  >
                     <Plus className="mr-2 h-4 w-4" />
                     Add Card
                   </Button>
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                {mockCards.map((card) => (
+                {displayedCards.map((card) => (
                   <div key={card.id} className="p-4 rounded-lg border border-border">
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-4">
@@ -298,6 +310,13 @@ const Profile = () => {
 
         </Tabs>
       </main>
+
+      <PlaidConnectModal
+        open={plaidModalOpen}
+        onOpenChange={setPlaidModalOpen}
+        onCardsConnected={handleCardsConnected}
+        connectedCardIds={connectedCardIds}
+      />
     </div>
   );
 };
