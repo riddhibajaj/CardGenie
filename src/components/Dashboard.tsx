@@ -22,14 +22,20 @@ import CreditHealthModal from "./CreditHealthModal";
 import ThemeToggle from "./ThemeToggle";
 import mockDataJson from "@/data/mockData.json";
 import { useCards } from "@/context/CardsContext";
+import { useLoyalty } from "@/context/LoyaltyContext";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const { getConnectedCards, connectedCardIds } = useCards();
+  const { getConnectedLoyaltyPrograms } = useLoyalty();
   const [showPortfolioModal, setShowPortfolioModal] = useState(false);
   const [showCreditHealthModal, setShowCreditHealthModal] = useState(false);
 
   const displayedCards = getConnectedCards();
+  const displayedLoyaltyPrograms = getConnectedLoyaltyPrograms();
+  
+  // Calculate total rewards value from connected loyalty programs
+  const totalRewardsValue = displayedLoyaltyPrograms.reduce((sum, acc) => sum + acc.valueCents, 0);
   
   // Calculate optimization score - more cards = harder to optimize
   const getOptimizationScore = () => {
@@ -84,8 +90,8 @@ const Dashboard = () => {
           <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
             <CardHeader>
               <CardDescription>Total Rewards Value</CardDescription>
-              <CardTitle className="text-4xl text-foreground">{formatCurrency(mockLoyaltyAccounts.reduce((sum, acc) => sum + acc.valueCents, 0))}</CardTitle>
-              <p className="text-sm text-muted-foreground mt-2">Across all your cards and programs</p>
+              <CardTitle className="text-4xl text-foreground">{formatCurrency(totalRewardsValue)}</CardTitle>
+              <p className="text-sm text-muted-foreground mt-2">Across all your connected programs</p>
             </CardHeader>
             <CardContent className="space-y-3">
               {optimizationScore === null ? (
@@ -303,8 +309,19 @@ const Dashboard = () => {
             <CardDescription>Your points and miles balances</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {mockLoyaltyAccounts.map((account) => (
+            {displayedLoyaltyPrograms.length === 0 ? (
+              <div className="text-center py-8">
+                <p className="text-muted-foreground mb-4">No loyalty programs connected yet</p>
+                <Button 
+                  variant="outline"
+                  onClick={() => navigate("/profile")}
+                >
+                  Add Loyalty Programs
+                </Button>
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {displayedLoyaltyPrograms.map((account) => (
                 <div 
                   key={account.id} 
                   className="group p-5 rounded-xl bg-gradient-card border border-border hover:border-accent/50 transition-all duration-300 hover:shadow-lg hover:shadow-accent/10 cursor-pointer hover:-translate-y-1"
@@ -332,7 +349,8 @@ const Dashboard = () => {
                   </div>
                 </div>
               ))}
-            </div>
+              </div>
+            )}
           </CardContent>
         </Card>
 

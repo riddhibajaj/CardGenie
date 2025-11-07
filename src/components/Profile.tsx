@@ -36,15 +36,20 @@ import {
 import { useNavigate } from "react-router-dom";
 import { mockUser, mockCards, mockGoals, mockLoyaltyAccounts } from "@/data/mockData";
 import { PlaidConnectModal } from "./PlaidConnectModal";
+import { AwardWalletConnectModal } from "./AwardWalletConnectModal";
 import { useToast } from "@/hooks/use-toast";
 import { useCards } from "@/context/CardsContext";
+import { useLoyalty } from "@/context/LoyaltyContext";
 
 const Profile = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { connectedCardIds, addCards, removeCard, getConnectedCards } = useCards();
+  const { connectedLoyaltyIds, addLoyaltyPrograms, removeLoyaltyProgram, getConnectedLoyaltyPrograms } = useLoyalty();
   const [plaidModalOpen, setPlaidModalOpen] = useState(false);
+  const [awardWalletModalOpen, setAwardWalletModalOpen] = useState(false);
   const [cardToDelete, setCardToDelete] = useState<string | null>(null);
+  const [programToDelete, setProgramToDelete] = useState<string | null>(null);
 
   const formatCurrency = (cents: number) => {
     return `$${(cents / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
@@ -52,6 +57,14 @@ const Profile = () => {
 
   const handleCardsConnected = (newCardIds: string[]) => {
     addCards(newCardIds);
+  };
+
+  const handleProgramsConnected = (newProgramIds: string[]) => {
+    addLoyaltyPrograms(newProgramIds);
+    toast({
+      title: `${newProgramIds.length} program${newProgramIds.length !== 1 ? 's' : ''} added successfully!`,
+      description: "Your loyalty programs have been connected.",
+    });
   };
 
   const handleDeleteCard = () => {
@@ -66,7 +79,20 @@ const Profile = () => {
     }
   };
 
+  const handleDeleteProgram = () => {
+    if (programToDelete) {
+      const programName = mockLoyaltyAccounts.find(p => p.id === programToDelete)?.program || "Program";
+      removeLoyaltyProgram(programToDelete);
+      toast({
+        title: "Program removed successfully",
+        description: `${programName} has been removed from your portfolio.`,
+      });
+      setProgramToDelete(null);
+    }
+  };
+
   const displayedCards = getConnectedCards();
+  const displayedLoyaltyPrograms = getConnectedLoyaltyPrograms();
 
   return (
     <div className="min-h-screen bg-background">
@@ -291,15 +317,26 @@ const Profile = () => {
                     <CardTitle>Linked Loyalty Programs</CardTitle>
                     <CardDescription>Manage your connected loyalty accounts</CardDescription>
                   </div>
-                  <Button className="bg-gradient-primary">
+                  <Button 
+                    className="bg-gradient-primary"
+                    onClick={() => setAwardWalletModalOpen(true)}
+                  >
                     <Plus className="mr-2 h-4 w-4" />
                     Add Loyalty Program
                   </Button>
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                {mockLoyaltyAccounts.map((account) => (
-                  <div key={account.id} className="p-4 rounded-lg border border-border">
+                {displayedLoyaltyPrograms.map((account) => (
+                  <div key={account.id} className="p-4 rounded-lg border border-border relative group">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive hover:bg-destructive/10"
+                      onClick={() => setProgramToDelete(account.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-4">
                         <div className="h-16 w-16 rounded-lg bg-gradient-accent flex items-center justify-center text-3xl">
@@ -353,6 +390,13 @@ const Profile = () => {
         connectedCardIds={connectedCardIds}
       />
 
+      <AwardWalletConnectModal
+        open={awardWalletModalOpen}
+        onOpenChange={setAwardWalletModalOpen}
+        onProgramsConnected={handleProgramsConnected}
+        connectedLoyaltyIds={connectedLoyaltyIds}
+      />
+
       <AlertDialog open={!!cardToDelete} onOpenChange={() => setCardToDelete(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -386,6 +430,45 @@ const Profile = () => {
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
               Remove Card
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog open={!!programToDelete} onOpenChange={() => setProgramToDelete(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <span className="text-destructive">⚠️</span>
+              Remove Loyalty Program?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="space-y-3">
+              {programToDelete && (
+                <>
+                  <p>Are you sure you want to remove:</p>
+                  <p className="font-semibold text-foreground">
+                    {mockLoyaltyAccounts.find(p => p.id === programToDelete)?.program} ({mockLoyaltyAccounts.find(p => p.id === programToDelete)?.balance.toLocaleString()} points)
+                  </p>
+                  <p className="text-sm">This will:</p>
+                  <ul className="text-sm list-disc pl-5 space-y-1">
+                    <li>Remove program from your portfolio</li>
+                    <li>Stop tracking this account</li>
+                    <li>Remove from dashboard and portfolio value</li>
+                    <li>Remove expiration alerts for this program</li>
+                  </ul>
+                  <p className="text-sm">You can reconnect anytime via AwardWallet.</p>
+                  <p className="font-semibold text-destructive">This action cannot be undone.</p>
+                </>
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteProgram}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Remove Program
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
