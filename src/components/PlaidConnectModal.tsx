@@ -293,8 +293,6 @@ export const PlaidConnectModal = ({ open, onOpenChange, onCardsConnected, connec
 
   const renderSuccess = () => {
     const addedCards = mockCards.filter(card => selectedCards.includes(card.id));
-    const oldScore = 78;
-    const newScore = 82;
     
     return (
       <>
@@ -316,21 +314,6 @@ export const PlaidConnectModal = ({ open, onOpenChange, onCardsConnected, connec
                 <span className="text-muted-foreground text-sm">(••{card.lastFour})</span>
               </div>
             ))}
-          </div>
-          
-          <div className="p-4 rounded-lg bg-gradient-subtle border border-accent/20">
-            <p className="text-sm font-semibold mb-2">Optimization Update</p>
-            <div className="flex items-center gap-3">
-              <span className="text-muted-foreground">Your optimization score:</span>
-              <div className="flex items-center gap-2">
-                <span className="font-bold">{oldScore}%</span>
-                <span className="text-accent">→</span>
-                <span className="font-bold text-accent">{newScore}%</span>
-              </div>
-            </div>
-            <p className="text-xs text-muted-foreground mt-2">
-              We found better card options for your spending patterns
-            </p>
           </div>
 
           <Button onClick={handleSuccess} className="w-full bg-gradient-primary">

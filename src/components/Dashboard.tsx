@@ -30,7 +30,20 @@ const Dashboard = () => {
   const [showCreditHealthModal, setShowCreditHealthModal] = useState(false);
 
   const displayedCards = getConnectedCards();
-  const optimizationScore = connectedCardIds.length >= 4 ? 82 : connectedCardIds.length >= 3 ? 80 : 78;
+  
+  // Calculate optimization score - more cards = harder to optimize
+  const getOptimizationScore = () => {
+    switch (connectedCardIds.length) {
+      case 0: return null;
+      case 1: return 85;
+      case 2: return 78;
+      case 3: return 73;
+      case 4: return 68;
+      default: return 68;
+    }
+  };
+  
+  const optimizationScore = getOptimizationScore();
 
   const formatCurrency = (cents: number) => {
     return `$${(cents / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
@@ -75,19 +88,44 @@ const Dashboard = () => {
               <p className="text-sm text-muted-foreground mt-2">Across all your cards and programs</p>
             </CardHeader>
             <CardContent className="space-y-3">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Optimization Score</span>
-                <span className="font-semibold text-lg text-foreground">{optimizationScore}%</span>
-              </div>
-              <Progress value={optimizationScore} className="h-2" />
-              <Button 
-                variant="outline"
-                className="w-full mt-4"
-                onClick={() => navigate("/card-analysis")}
-              >
-                <Sparkles className="mr-2 h-4 w-4" />
-                View Optimization Details
-              </Button>
+              {optimizationScore === null ? (
+                <div className="text-center py-4">
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Connect your credit card accounts to start optimizing your rewards
+                  </p>
+                  <Button 
+                    variant="outline"
+                    className="w-full"
+                    onClick={() => navigate("/profile")}
+                  >
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    Add Your First Card
+                  </Button>
+                </div>
+              ) : (
+                <>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Optimization Score</span>
+                    <span className="font-semibold text-lg text-foreground">{optimizationScore}%</span>
+                  </div>
+                  <Progress value={optimizationScore} className="h-2" />
+                  <p className="text-xs text-muted-foreground mt-2">
+                    {connectedCardIds.length === 1 
+                      ? "Great start! Add more cards to unlock better recommendations."
+                      : connectedCardIds.length === 4
+                      ? "Having many cards increases rewards potential but makes manual optimization challenging."
+                      : "More cards provide flexibility but require smarter optimization."}
+                  </p>
+                  <Button 
+                    variant="outline"
+                    className="w-full mt-4"
+                    onClick={() => navigate("/card-analysis")}
+                  >
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    View Optimization Details
+                  </Button>
+                </>
+              )}
             </CardContent>
           </Card>
 
