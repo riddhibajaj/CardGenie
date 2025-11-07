@@ -14,12 +14,16 @@ import {
 } from "@/components/ui/chart";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, LineChart, Line } from "recharts";
 import { mockCards, mockTransactions } from "@/data/mockData";
+import { useCards } from "@/context/CardsContext";
 
 const CardAnalysis = () => {
   const navigate = useNavigate();
-  const [selectedCardId, setSelectedCardId] = useState(mockCards[0]?.id || "");
+  const { getConnectedCards } = useCards();
+  const displayedCards = getConnectedCards();
   
-  const card = mockCards.find(c => c.id === selectedCardId);
+  const [selectedCardId, setSelectedCardId] = useState(displayedCards[0]?.id || "");
+  
+  const card = displayedCards.find(c => c.id === selectedCardId);
   const cardTransactions = mockTransactions.filter(t => t.cardId === selectedCardId);
   
   if (!card) {
@@ -176,7 +180,7 @@ const CardAnalysis = () => {
         {/* Card Tabs */}
         <Tabs value={selectedCardId} onValueChange={setSelectedCardId} className="mb-8">
           <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2 h-auto bg-transparent">
-            {mockCards.map((c) => (
+            {displayedCards.map((c) => (
               <TabsTrigger 
                 key={c.id} 
                 value={c.id}

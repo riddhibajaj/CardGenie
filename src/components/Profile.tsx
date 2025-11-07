@@ -37,12 +37,13 @@ import { useNavigate } from "react-router-dom";
 import { mockUser, mockCards, mockGoals, mockLoyaltyAccounts } from "@/data/mockData";
 import { PlaidConnectModal } from "./PlaidConnectModal";
 import { useToast } from "@/hooks/use-toast";
+import { useCards } from "@/context/CardsContext";
 
 const Profile = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { connectedCardIds, addCards, removeCard, getConnectedCards } = useCards();
   const [plaidModalOpen, setPlaidModalOpen] = useState(false);
-  const [connectedCardIds, setConnectedCardIds] = useState<string[]>(mockCards.map(c => c.id));
   const [cardToDelete, setCardToDelete] = useState<string | null>(null);
 
   const formatCurrency = (cents: number) => {
@@ -50,13 +51,13 @@ const Profile = () => {
   };
 
   const handleCardsConnected = (newCardIds: string[]) => {
-    setConnectedCardIds(prev => [...new Set([...prev, ...newCardIds])]);
+    addCards(newCardIds);
   };
 
   const handleDeleteCard = () => {
     if (cardToDelete) {
       const cardName = mockCards.find(c => c.id === cardToDelete)?.name || "Card";
-      setConnectedCardIds(prev => prev.filter(id => id !== cardToDelete));
+      removeCard(cardToDelete);
       toast({
         title: "Card removed successfully",
         description: `${cardName} has been removed from your portfolio.`,
@@ -65,7 +66,7 @@ const Profile = () => {
     }
   };
 
-  const displayedCards = mockCards.filter(card => connectedCardIds.includes(card.id));
+  const displayedCards = getConnectedCards();
 
   return (
     <div className="min-h-screen bg-background">

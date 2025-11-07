@@ -3,6 +3,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ThemeProvider } from "next-themes";
+import { CardsProvider } from "./context/CardsContext";
 import LandingPage from "./components/LandingPage";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
@@ -18,26 +20,30 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/selector" element={<SmartSelector />} />
-          <Route path="/alerts" element={<AlertsCenter />} />
-          <Route path="/chat" element={<ChatAssistant />} />
-          <Route path="/card/:cardId" element={<CardAnalysis />} />
-          <Route path="/card-analysis" element={<CardAnalysis />} />
-          <Route path="/calendar" element={<RewardsCalendar />} />
-          <Route path="/profile" element={<Profile />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+      <CardsProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/selector" element={<SmartSelector />} />
+              <Route path="/alerts" element={<AlertsCenter />} />
+              <Route path="/chat" element={<ChatAssistant />} />
+              <Route path="/card/:cardId" element={<CardAnalysis />} />
+              <Route path="/card-analysis" element={<CardAnalysis />} />
+              <Route path="/calendar" element={<RewardsCalendar />} />
+              <Route path="/profile" element={<Profile />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </CardsProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 );
 

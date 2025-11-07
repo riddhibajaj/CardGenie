@@ -21,11 +21,16 @@ import FloatingChatButton from "./FloatingChatButton";
 import CreditHealthModal from "./CreditHealthModal";
 import ThemeToggle from "./ThemeToggle";
 import mockDataJson from "@/data/mockData.json";
+import { useCards } from "@/context/CardsContext";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const { getConnectedCards, connectedCardIds } = useCards();
   const [showPortfolioModal, setShowPortfolioModal] = useState(false);
   const [showCreditHealthModal, setShowCreditHealthModal] = useState(false);
+
+  const displayedCards = getConnectedCards();
+  const optimizationScore = connectedCardIds.length >= 4 ? 82 : connectedCardIds.length >= 3 ? 80 : 78;
 
   const formatCurrency = (cents: number) => {
     return `$${(cents / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
@@ -72,9 +77,9 @@ const Dashboard = () => {
             <CardContent className="space-y-3">
               <div className="flex items-center justify-between text-sm">
                 <span className="text-muted-foreground">Optimization Score</span>
-                <span className="font-semibold text-lg text-foreground">{mockUser.optimizationScore}%</span>
+                <span className="font-semibold text-lg text-foreground">{optimizationScore}%</span>
               </div>
-              <Progress value={mockUser.optimizationScore} className="h-2" />
+              <Progress value={optimizationScore} className="h-2" />
               <Button 
                 variant="outline"
                 className="w-full mt-4"
@@ -214,7 +219,7 @@ const Dashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 gap-4">
-              {mockCards.map((card) => (
+              {displayedCards.map((card) => (
                 <div 
                   key={card.id} 
                   className="p-4 rounded-lg border border-border hover:border-primary transition-colors cursor-pointer"
