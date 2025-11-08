@@ -67,7 +67,7 @@ const LandingPage = () => {
             <Button 
               size="lg" 
               onClick={() => navigate("/login")}
-              className="bg-gradient-primary text-lg h-14 px-8 shadow-glow"
+              className="bg-gradient-primary text-lg h-14 px-8 shadow-md"
             >
               Get Started
               <ArrowRight className="ml-2 h-5 w-5" />
@@ -106,7 +106,7 @@ const LandingPage = () => {
 
           <div className="max-w-4xl mx-auto">
             <div className="grid md:grid-cols-2 gap-8">
-              <Card className="border-2 border-destructive/20 bg-destructive/5">
+              <Card className="border-2 border-destructive/20 bg-destructive/5 hover:-translate-y-1 transition-transform duration-300">
                 <CardContent className="pt-6">
                   <h3 className="text-lg font-bold mb-6 text-center flex items-center justify-center gap-2">
                     ❌ Without CardGenie
@@ -132,7 +132,7 @@ const LandingPage = () => {
                 </CardContent>
               </Card>
 
-              <Card className="border-2 border-success/20 bg-success/5">
+              <Card className="border-2 border-success/20 bg-success/5 hover:-translate-y-1 transition-transform duration-300">
                 <CardContent className="pt-6">
                   <h3 className="text-lg font-bold mb-6 text-center flex items-center justify-center gap-2">
                     ✅ With CardGenie
