@@ -5,9 +5,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, AlertTriangle, Bell, Sparkles, CheckCircle2, TrendingUp } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { mockAlerts } from "@/data/mockData";
+import { useCards } from "@/context/CardsContext";
+import { useLoyalty } from "@/context/LoyaltyContext";
 
 const AlertsCenter = () => {
   const navigate = useNavigate();
+  const { connectedCardIds } = useCards();
+  const { getConnectedLoyaltyPrograms } = useLoyalty();
+  const displayedLoyaltyPrograms = getConnectedLoyaltyPrograms();
+  const hasConnections = connectedCardIds.length > 0 || displayedLoyaltyPrograms.length > 0;
 
   const urgentAlerts = mockAlerts.filter(a => a.severity === 'urgent');
   const warningAlerts = mockAlerts.filter(a => a.severity === 'warning');
@@ -98,6 +104,19 @@ const AlertsCenter = () => {
       </header>
 
       <main className="container mx-auto px-4 py-8 max-w-5xl">
+        {!hasConnections ? (
+          <Card>
+            <CardContent className="py-16 text-center">
+              <Bell className="h-16 w-16 text-muted-foreground mx-auto mb-4 opacity-50" />
+              <h3 className="text-lg font-semibold mb-2">No Alerts Yet</h3>
+              <p className="text-muted-foreground mb-6">Connect your cards and loyalty programs to start receiving alerts and opportunities</p>
+              <Button onClick={() => navigate("/profile")} className="bg-gradient-primary">
+                Connect Accounts
+              </Button>
+            </CardContent>
+          </Card>
+        ) : (
+          <>
         {/* Summary Cards */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">
           <Card className="border-2 border-destructive bg-destructive/5">
@@ -181,39 +200,8 @@ const AlertsCenter = () => {
             ))}
           </TabsContent>
         </Tabs>
-
-        {/* Notification Settings */}
-        <Card className="mt-8">
-          <CardHeader>
-            <CardTitle>Notification Preferences</CardTitle>
-            <CardDescription>Choose how you want to be notified</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid md:grid-cols-3 gap-4">
-              <div className="flex items-center gap-3 p-4 rounded-lg border border-border">
-                <Bell className="h-5 w-5 text-accent" />
-                <div>
-                  <p className="font-semibold text-sm">Push Notifications</p>
-                  <p className="text-xs text-muted-foreground">Real-time alerts on your device</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3 p-4 rounded-lg border border-border">
-                <TrendingUp className="h-5 w-5 text-accent" />
-                <div>
-                  <p className="font-semibold text-sm">Email Digest</p>
-                  <p className="text-xs text-muted-foreground">Daily summary of alerts</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3 p-4 rounded-lg border border-border">
-                <Sparkles className="h-5 w-5 text-accent" />
-                <div>
-                  <p className="font-semibold text-sm">Smart Alerts</p>
-                  <p className="text-xs text-muted-foreground">Only high-value opportunities</p>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+          </>
+        )}
       </main>
     </div>
   );

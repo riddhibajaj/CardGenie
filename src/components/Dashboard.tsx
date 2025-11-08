@@ -174,7 +174,7 @@ const Dashboard = () => {
                 Get instant recommendations for which card to use based on your spending category, bonus offers, and rewards rates.
               </p>
               <Button 
-                className="w-full bg-white/95 text-primary hover:bg-white hover:scale-105 transition-transform font-semibold shadow-lg"
+                className="w-full bg-white/95 text-primary hover:bg-white/100 hover:text-accent transition-colors font-semibold shadow-lg"
                 onClick={() => navigate("/selector")}
               >
                 Start Smart Selector
@@ -188,7 +188,7 @@ const Dashboard = () => {
         {/* Key Metrics - 3 Equal Cards */}
         <div className="grid md:grid-cols-3 gap-6">
           <Card 
-            className="cursor-pointer transition-all hover:shadow-lg"
+            className="cursor-pointer transition-all hover:shadow-lg hover:border-primary"
             onClick={() => {
               navigate("/profile");
               setTimeout(() => {
@@ -208,13 +208,14 @@ const Dashboard = () => {
             </CardHeader>
             <CardContent className="space-y-3">
               {mockGoals.map((goal) => {
-                const progress = (goal.currentValue / goal.targetValue) * 100;
+                const currentValue = connectedCardIds.length === 0 && displayedLoyaltyPrograms.length === 0 ? 0 : goal.currentValue;
+                const progress = (currentValue / goal.targetValue) * 100;
                 return (
                   <div key={goal.id}>
                     <div className="flex justify-between items-center mb-2">
                       <span className="text-sm font-medium">{goal.name}</span>
                       <span className="text-sm text-muted-foreground">
-                        {formatCurrency(goal.currentValue)} / {formatCurrency(goal.targetValue)}
+                        {formatCurrency(currentValue)} / {formatCurrency(goal.targetValue)}
                       </span>
                     </div>
                     <Progress value={progress} className="h-2" />
@@ -404,24 +405,20 @@ const Dashboard = () => {
         </Card>
 
         {/* Alerts & Opportunities - Actionable Insights */}
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle>Recent Alerts & Opportunities</CardTitle>
-                <CardDescription>Stay informed and take action on time-sensitive items</CardDescription>
+        {(connectedCardIds.length > 0 || displayedLoyaltyPrograms.length > 0) && (
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle>Recent Alerts & Opportunities</CardTitle>
+                  <CardDescription>Stay informed and take action on time-sensitive items</CardDescription>
+                </div>
+                <Button variant="ghost" size="sm" onClick={() => navigate("/alerts")}>
+                  View All
+                </Button>
               </div>
-              <Button variant="ghost" size="sm" onClick={() => navigate("/alerts")}>
-                View All
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {connectedCardIds.length === 0 && displayedLoyaltyPrograms.length === 0 ? (
-              <div className="text-center py-8">
-                <p className="text-muted-foreground text-sm">Connect accounts to see alerts and opportunities</p>
-              </div>
-            ) : (
+            </CardHeader>
+            <CardContent>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {mockAlerts.slice(0, 3).map((alert) => (
                   <div key={alert.id} className="p-4 rounded-lg border border-border hover:border-primary transition-colors">
@@ -448,9 +445,9 @@ const Dashboard = () => {
                   </div>
                 ))}
               </div>
-            )}
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        )}
       </main>
 
       <PortfolioOptimizationModal

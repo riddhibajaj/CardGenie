@@ -31,7 +31,10 @@ import {
   MapPin,
   LogOut,
   Gift,
-  Trash2
+  Trash2,
+  Bell,
+  TrendingUp,
+  Sparkles
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { mockUser, mockCards, mockGoals, mockLoyaltyAccounts } from "@/data/mockData";
@@ -183,7 +186,8 @@ const Profile = () => {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     {mockGoals.map((goal) => {
-                      const progress = (goal.currentValue / goal.targetValue) * 100;
+                      const currentValue = connectedCardIds.length === 0 && displayedLoyaltyPrograms.length === 0 ? 0 : goal.currentValue;
+                      const progress = (currentValue / goal.targetValue) * 100;
                       const daysRemaining = Math.ceil((new Date(goal.targetDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
                       
                       return (
@@ -196,7 +200,7 @@ const Profile = () => {
                               <div>
                                 <h4 className="font-semibold">{goal.name}</h4>
                                 <p className="text-sm text-muted-foreground">
-                                  {formatCurrency(goal.currentValue)} of {formatCurrency(goal.targetValue)}
+                                  {formatCurrency(currentValue)} of {formatCurrency(goal.targetValue)}
                                 </p>
                               </div>
                             </div>
@@ -230,6 +234,36 @@ const Profile = () => {
                 </Button>
               </div>
 
+              {/* Notification Preferences - Vertical Card */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Notification Preferences</CardTitle>
+                  <CardDescription>Choose how you want to be notified</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center gap-3 p-4 rounded-lg border border-border transition-all hover:border-accent hover:bg-accent/5 cursor-pointer">
+                    <Bell className="h-5 w-5 text-accent flex-shrink-0" />
+                    <div>
+                      <p className="font-semibold text-sm">Push Notifications</p>
+                      <p className="text-xs text-muted-foreground">Real-time alerts on your device</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 p-4 rounded-lg border border-border transition-all hover:border-accent hover:bg-accent/5 cursor-pointer">
+                    <TrendingUp className="h-5 w-5 text-accent flex-shrink-0" />
+                    <div>
+                      <p className="font-semibold text-sm">Email Digest</p>
+                      <p className="text-xs text-muted-foreground">Daily summary of alerts</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 p-4 rounded-lg border border-border transition-all hover:border-accent hover:bg-accent/5 cursor-pointer">
+                    <Sparkles className="h-5 w-5 text-accent flex-shrink-0" />
+                    <div>
+                      <p className="font-semibold text-sm">Smart Alerts</p>
+                      <p className="text-xs text-muted-foreground">Only high-value opportunities</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </TabsContent>
 
