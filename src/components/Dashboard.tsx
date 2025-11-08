@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { mockUser, mockCards, mockLoyaltyAccounts, mockAlerts, mockGoals } from "@/data/mockData";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PortfolioOptimizationModal from "./PortfolioOptimizationModal";
 import FloatingChatButton from "./FloatingChatButton";
 import CreditHealthModal from "./CreditHealthModal";
@@ -30,6 +30,16 @@ const Dashboard = () => {
   const { getConnectedLoyaltyPrograms } = useLoyalty();
   const [showPortfolioModal, setShowPortfolioModal] = useState(false);
   const [showCreditHealthModal, setShowCreditHealthModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading for realistic feel
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 750);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   const displayedCards = getConnectedCards();
   const displayedLoyaltyPrograms = getConnectedLoyaltyPrograms();
@@ -55,8 +65,21 @@ const Dashboard = () => {
     return `$${(cents / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center space-y-4 animate-fade-in">
+          <div className="h-16 w-16 rounded-2xl bg-gradient-accent flex items-center justify-center mx-auto animate-pulse">
+            <CreditCard className="h-8 w-8 text-white" />
+          </div>
+          <p className="text-sm text-muted-foreground">Loading your dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background animate-fade-in">
       {/* Header */}
       <header className="border-b border-border bg-card">
         <div className="container mx-auto px-4 py-4">

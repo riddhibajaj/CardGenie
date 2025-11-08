@@ -3,9 +3,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, Zap, TrendingUp, Bell, Shield, CreditCard, Target } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle";
+import React from "react";
 
 const LandingPage = () => {
   const navigate = useNavigate();
+
+  // Scroll to top when component mounts
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-hero">
@@ -67,7 +73,7 @@ const LandingPage = () => {
             <Button 
               size="lg" 
               onClick={() => navigate("/login")}
-              className="bg-gradient-primary text-lg h-14 px-8 shadow-md"
+              className="bg-gradient-primary text-lg h-14 px-8 shadow-md hover:scale-105 hover:shadow-lg transition-all duration-300"
             >
               Get Started
               <ArrowRight className="ml-2 h-5 w-5" />
@@ -304,7 +310,10 @@ const LandingPage = () => {
           </p>
           <Button 
             size="lg" 
-            onClick={() => navigate("/dashboard")}
+            onClick={() => {
+              navigate("/login");
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
             className="bg-white text-primary hover:bg-gray-100 text-lg h-14 px-8"
           >
             Start Optimizing Now

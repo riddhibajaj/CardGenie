@@ -1,20 +1,20 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Sparkles } from "lucide-react";
+import { CreditCard } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/5 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md shadow-xl">
+    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/5 flex items-center justify-center p-4 animate-fade-in">
+      <Card className="w-full max-w-md shadow-xl animate-scale-in">
         <CardHeader className="text-center space-y-4">
-          <div className="mx-auto h-16 w-16 rounded-2xl bg-gradient-primary flex items-center justify-center">
-            <Sparkles className="h-8 w-8 text-white" />
+          <div className="mx-auto h-16 w-16 rounded-2xl bg-gradient-accent flex items-center justify-center animate-pulse">
+            <CreditCard className="h-8 w-8 text-white" />
           </div>
           <div>
-            <CardTitle className="text-3xl font-bold">Welcome!</CardTitle>
+            <CardTitle className="text-3xl font-bold">Welcome to CardGenie</CardTitle>
           </div>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -23,7 +23,7 @@ const Login = () => {
             <Button
               onClick={() => navigate("/dashboard")}
               size="lg"
-              className="w-full bg-gradient-primary text-lg h-12"
+              className="w-full bg-gradient-primary text-lg h-12 hover:scale-105 transition-transform duration-300"
             >
               Login as Riddhi
             </Button>
