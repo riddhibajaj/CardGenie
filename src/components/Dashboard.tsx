@@ -110,7 +110,7 @@ const Dashboard = () => {
       <main className="container mx-auto px-4 py-8 space-y-8">
         {/* Hero Section - Financial Health Snapshot */}
         <div className="grid lg:grid-cols-2 gap-6">
-          <Card className="cursor-pointer hover:border-primary transition-colors">
+          <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
             <CardHeader>
               <CardDescription>Total Rewards Value</CardDescription>
               <CardTitle className="text-4xl text-foreground">{formatCurrency(totalRewardsValue)}</CardTitle>
@@ -147,7 +147,7 @@ const Dashboard = () => {
                   </p>
                   <Button 
                     variant="outline"
-                    className="w-full mt-4 bg-white hover:bg-white/90 text-foreground"
+                    className="w-full mt-4"
                     onClick={() => navigate("/card-analysis")}
                   >
                     <Sparkles className="mr-2 h-4 w-4" />
@@ -257,7 +257,7 @@ const Dashboard = () => {
             </CardContent>
           </Card>
 
-          <Card className="border-2 border-warning">
+          <Card className="border-2 border-warning bg-warning/5">
             <CardHeader>
               <CardTitle className="text-warning">Expiration Alerts</CardTitle>
               <CardDescription>Rewards expiring soon</CardDescription>
@@ -276,7 +276,7 @@ const Dashboard = () => {
                   <Button 
                     variant="outline" 
                     size="sm" 
-                    className="w-full border-warning text-warning bg-white hover:bg-white/90"
+                    className="w-full border-warning text-warning hover:bg-warning hover:text-white"
                     onClick={() => navigate("/alerts")}
                   >
                     <AlertTriangle className="mr-2 h-4 w-4" />
@@ -438,7 +438,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     {alert.severity === 'urgent' && (
-                      <Button size="sm" variant="outline" className="w-full border-destructive text-destructive bg-white hover:bg-white/90">
+                      <Button size="sm" variant="outline" className="w-full border-destructive text-destructive hover:bg-destructive hover:text-white">
                         Take Action
                       </Button>
                     )}
