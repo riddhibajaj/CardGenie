@@ -7,7 +7,7 @@
 @layer base {
   :root {
     /* Light mode - Softer version of dark theme */
-    --background: 0 0% 98%;
+    --background: 200 30% 96%;
     --foreground: 231 37% 17%;
 
     --card: 0 0% 100%;
@@ -37,7 +37,7 @@
     --progress-background: 218 26% 88%;
     --progress-fill: 180 85% 38%;
 
-    --muted: 218 26% 95%;
+    --muted: 200 26% 94%;
     --muted-foreground: 218 10% 46%;
 
     --success: 142 76% 36%;
@@ -58,7 +58,7 @@
     /* Modern Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(231 37% 17%), hsl(231 31% 22%));
     --gradient-accent: linear-gradient(135deg, hsl(180 85% 38%), hsl(222 85% 58%));
-    --gradient-hero: linear-gradient(180deg, hsl(0 0% 98%), hsl(218 26% 95%));
+    --gradient-hero: linear-gradient(180deg, hsl(200 30% 96%), hsl(200 26% 94%));
     --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(218 26% 98%));
     
     /* Modern Shadows */
