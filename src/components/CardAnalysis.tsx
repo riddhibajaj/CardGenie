@@ -24,18 +24,18 @@ const CardAnalysis = () => {
   
   const [selectedCardId, setSelectedCardId] = useState(displayedCards[0]?.id || "");
 
-  // Show notification when Chase Freedom Flex tab is clicked
+  // Show notification when Citi Double Cash tab is clicked
   useEffect(() => {
-    // Check if the selected card is Chase Freedom Flex (id "3")
-    if (selectedCardId === "3") {
+    // Check if the selected card is Citi Double Cash (id "4")
+    if (selectedCardId === "4") {
       const timer = setTimeout(() => {
         toast({
           title: "Lunch Time, Riddhi!",
           description: (
             <span>
               Planning to grab something from Zeeks Pizza today? Remember to use your{" "}
-              <strong className="text-primary font-bold">Chase Freedom Flex</strong> to earn{" "}
-              <strong className="text-accent font-bold">3x rewards</strong>.
+              <strong className="text-primary font-bold">Citi Double Cash</strong> to earn{" "}
+              <strong className="text-accent font-bold">2x rewards</strong>.
             </span>
           ),
           duration: Infinity,
