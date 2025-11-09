@@ -26,8 +26,8 @@ const CardAnalysis = () => {
 
   // Show notification when Citi Double Cash tab is clicked
   useEffect(() => {
-    // Check if the selected card is Citi Double Cash (id "4")
-    if (selectedCardId === "4") {
+    // Check if the selected card is Citi Double Cash (id "3")
+    if (selectedCardId === "3") {
       const timer = setTimeout(() => {
         toast({
           title: "Lunch Time, Riddhi!",
