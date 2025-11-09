@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -54,13 +54,15 @@ export const PlaidConnectModal = ({ open, onOpenChange, onCardsConnected, connec
   const [selectedCards, setSelectedCards] = useState<string[]>([]);
   const [loadingProgress, setLoadingProgress] = useState(0);
 
-  // Auto-select all available cards on mount
-  useState(() => {
-    const allAvailableCards = banks.flatMap(bank => 
-      bank.cardIds.filter(id => !connectedCardIds.includes(id))
-    );
-    setSelectedCards(allAvailableCards);
-  });
+  // Auto-select all available cards when modal opens
+  useEffect(() => {
+    if (open) {
+      const allAvailableCards = banks.flatMap(bank => 
+        bank.cardIds.filter(id => !connectedCardIds.includes(id))
+      );
+      setSelectedCards(allAvailableCards);
+    }
+  }, [open, connectedCardIds]);
 
   const handleConnectAll = () => {
     setStep("loading");
