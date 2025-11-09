@@ -33,9 +33,15 @@ const CardAnalysis = () => {
       const timer = setTimeout(() => {
         toast({
           title: "Lunch Time, Riddhi!",
-          description: "Planning to grab something from Zeeks Pizza today? Remember to use your Chase Freedom to earn 3x rewards.",
+          description: (
+            <span>
+              Planning to grab something from Zeeks Pizza today? Remember to use your{" "}
+              <strong className="text-primary font-bold">Chase Freedom</strong> to earn{" "}
+              <strong className="text-accent font-bold">3x rewards</strong>.
+            </span>
+          ),
           duration: Infinity, // Won't auto-dismiss
-          className: "animate-fade-in",
+          className: "animate-scale-in",
         });
       }, 2500);
 
