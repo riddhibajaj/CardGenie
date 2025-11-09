@@ -147,7 +147,7 @@ const Dashboard = () => {
                   </p>
                   <Button 
                     variant="outline"
-                    className="w-full mt-4"
+                    className="w-full mt-4 bg-white hover:bg-white/90 text-foreground"
                     onClick={() => navigate("/card-analysis")}
                   >
                     <Sparkles className="mr-2 h-4 w-4" />
@@ -276,7 +276,7 @@ const Dashboard = () => {
                   <Button 
                     variant="outline" 
                     size="sm" 
-                    className="w-full border-warning text-warning hover:bg-warning hover:text-white"
+                    className="w-full border-warning text-warning bg-white hover:bg-white/90"
                     onClick={() => navigate("/alerts")}
                   >
                     <AlertTriangle className="mr-2 h-4 w-4" />
@@ -438,7 +438,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     {alert.severity === 'urgent' && (
-                      <Button size="sm" variant="outline" className="w-full border-destructive text-destructive hover:bg-destructive hover:text-white">
+                      <Button size="sm" variant="outline" className="w-full border-destructive text-destructive bg-white hover:bg-white/90">
                         Take Action
                       </Button>
                     )}
