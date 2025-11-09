@@ -12,9 +12,9 @@ import { mockCards, mockRecommendation } from "@/data/mockData";
 
 const SmartSelector = () => {
   const navigate = useNavigate();
-  const [category, setCategory] = useState("");
-  const [amount, setAmount] = useState("");
-  const [merchant, setMerchant] = useState("");
+  const [category, setCategory] = useState("shopping");
+  const [amount, setAmount] = useState("200");
+  const [merchant, setMerchant] = useState("Macy's");
   const [showResults, setShowResults] = useState(false);
 
   const categories = [
