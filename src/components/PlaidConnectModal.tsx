@@ -3,7 +3,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowLeft, Check, Loader2 } from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Check, Loader2 } from "lucide-react";
 import { mockCards } from "@/data/mockData";
 import { toast } from "@/hooks/use-toast";
 
@@ -46,29 +47,22 @@ const banks: Bank[] = [
   },
 ];
 
-type Step = "bank-selection" | "account-selection" | "loading" | "success";
+type Step = "selection" | "loading" | "success";
 
 export const PlaidConnectModal = ({ open, onOpenChange, onCardsConnected, connectedCardIds }: PlaidConnectModalProps) => {
-  const [step, setStep] = useState<Step>("bank-selection");
-  const [selectedBank, setSelectedBank] = useState<Bank | null>(null);
+  const [step, setStep] = useState<Step>("selection");
   const [selectedCards, setSelectedCards] = useState<string[]>([]);
   const [loadingProgress, setLoadingProgress] = useState(0);
 
-  const handleBankSelect = (bank: Bank) => {
-    setSelectedBank(bank);
-    // Pre-select all cards that aren't already connected
-    const availableCards = bank.cardIds.filter(id => !connectedCardIds.includes(id));
-    setSelectedCards(availableCards);
-    setStep("account-selection");
-  };
+  // Auto-select all available cards on mount
+  useState(() => {
+    const allAvailableCards = banks.flatMap(bank => 
+      bank.cardIds.filter(id => !connectedCardIds.includes(id))
+    );
+    setSelectedCards(allAvailableCards);
+  });
 
-  const handleBack = () => {
-    setStep("bank-selection");
-    setSelectedBank(null);
-    setSelectedCards([]);
-  };
-
-  const handleConnect = () => {
+  const handleConnectAll = () => {
     setStep("loading");
     setLoadingProgress(0);
 
@@ -101,15 +95,22 @@ export const PlaidConnectModal = ({ open, onOpenChange, onCardsConnected, connec
 
   const handleSuccess = () => {
     onCardsConnected(selectedCards);
+    const bankNames = banks
+      .filter(bank => bank.cardIds.some(id => selectedCards.includes(id)))
+      .map(bank => bank.name)
+      .join(", ");
+    
     toast({
       title: "Successfully Connected!",
-      description: `Added ${selectedCards.length} card(s) from ${selectedBank?.name}`,
+      description: `Added ${selectedCards.length} card(s) from ${bankNames}`,
     });
     
     // Reset state
-    setStep("bank-selection");
-    setSelectedBank(null);
-    setSelectedCards([]);
+    setStep("selection");
+    const allAvailableCards = banks.flatMap(bank => 
+      bank.cardIds.filter(id => !connectedCardIds.includes(id))
+    );
+    setSelectedCards(allAvailableCards);
     onOpenChange(false);
   };
 
@@ -117,9 +118,8 @@ export const PlaidConnectModal = ({ open, onOpenChange, onCardsConnected, connec
     return `$${(cents / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
   };
 
-  const getSelectedBankCards = () => {
-    if (!selectedBank) return [];
-    return mockCards.filter(card => selectedBank.cardIds.includes(card.id));
+  const getBankCards = (bank: Bank) => {
+    return mockCards.filter(card => bank.cardIds.includes(card.id));
   };
 
   const getAvailableCardsCount = (bank: Bank) => {
@@ -134,134 +134,112 @@ export const PlaidConnectModal = ({ open, onOpenChange, onCardsConnected, connec
     );
   };
 
-  const renderBankSelection = () => (
+  const renderSelection = () => (
     <>
       <DialogHeader>
-        <DialogTitle>Connect Your Bank</DialogTitle>
+        <DialogTitle>Connect Your Banks</DialogTitle>
         <DialogDescription>Securely link your credit cards via Plaid</DialogDescription>
       </DialogHeader>
-      <div className="space-y-3 mt-4">
-        {banks.map((bank) => {
-          const availableCount = getAvailableCardsCount(bank);
-          const isFullyConnected = availableCount === 0;
-          
-          return (
-            <button
-              key={bank.id}
-              onClick={() => !isFullyConnected && handleBankSelect(bank)}
-              disabled={isFullyConnected}
-              className={`w-full p-4 rounded-lg border border-border text-left transition-all ${
-                isFullyConnected 
-                  ? 'opacity-50 cursor-not-allowed bg-muted/30' 
-                  : 'hover:border-accent hover:bg-accent/5 hover:shadow-glow'
-              }`}
-            >
-              <div className="flex items-center gap-4">
-                <div className="text-4xl">{bank.icon}</div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-semibold">{bank.name}</h3>
-                    {isFullyConnected && (
-                      <Badge variant="secondary" className="bg-accent/10 text-accent">
-                        <Check className="h-3 w-3 mr-1" />
-                        Connected
-                      </Badge>
-                    )}
+      <div className="mt-4 max-h-[60vh] overflow-y-auto">
+        <Accordion type="single" collapsible className="space-y-3">
+          {banks.map((bank) => {
+            const availableCount = getAvailableCardsCount(bank);
+            const bankCards = getBankCards(bank);
+            const isFullyConnected = availableCount === 0;
+            
+            return (
+              <AccordionItem 
+                key={bank.id} 
+                value={bank.id}
+                className="border border-border rounded-lg overflow-hidden"
+              >
+                <AccordionTrigger className="px-4 hover:no-underline hover:bg-accent/5">
+                  <div className="flex items-center gap-4 flex-1">
+                    <div className="text-4xl">{bank.icon}</div>
+                    <div className="flex-1 text-left">
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-semibold">{bank.name}</h3>
+                        {isFullyConnected && (
+                          <Badge variant="secondary" className="bg-accent/10 text-accent">
+                            <Check className="h-3 w-3 mr-1" />
+                            Connected
+                          </Badge>
+                        )}
+                      </div>
+                      {!isFullyConnected && (
+                        <p className="text-xs text-accent mt-1">
+                          {availableCount} credit card{availableCount !== 1 ? 's' : ''} available
+                        </p>
+                      )}
+                    </div>
                   </div>
-                  <p className="text-sm text-muted-foreground">{bank.subtitle}</p>
-                  {!isFullyConnected && (
-                    <p className="text-xs text-accent mt-1">
-                      {availableCount} credit card{availableCount !== 1 ? 's' : ''} available
-                    </p>
-                  )}
-                </div>
-              </div>
-            </button>
-          );
-        })}
+                </AccordionTrigger>
+                <AccordionContent className="px-4 pb-4">
+                  <div className="space-y-2">
+                    {bankCards.map((card) => {
+                      const isAlreadyConnected = connectedCardIds.includes(card.id);
+                      const isSelected = selectedCards.includes(card.id);
+                      const utilization = Math.round((card.currentBalance / card.creditLimit) * 100);
+                      
+                      return (
+                        <div
+                          key={card.id}
+                          className={`p-3 rounded-lg border transition-all ${
+                            isAlreadyConnected 
+                              ? 'border-border bg-muted/30 opacity-60'
+                              : isSelected
+                              ? 'border-accent bg-accent/5 shadow-sm'
+                              : 'border-border hover:border-accent/50'
+                          }`}
+                        >
+                          <div className="flex items-start gap-3">
+                            {!isAlreadyConnected && (
+                              <Checkbox
+                                checked={isSelected}
+                                onCheckedChange={() => toggleCardSelection(card.id)}
+                                className="mt-1"
+                              />
+                            )}
+                            <div className={`h-10 w-16 rounded-md bg-gradient-to-br ${card.color} flex items-center justify-center text-white font-mono text-xs flex-shrink-0`}>
+                              •••• {card.lastFour}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2">
+                                <p className="font-semibold text-sm">{card.name}</p>
+                                {isAlreadyConnected && (
+                                  <Badge variant="secondary" className="bg-accent/10 text-accent text-xs">
+                                    <Check className="h-3 w-3 mr-1" />
+                                    Connected
+                                  </Badge>
+                                )}
+                              </div>
+                              <p className="text-xs text-muted-foreground mt-0.5">
+                                Balance: {formatCurrency(card.currentBalance)} / {formatCurrency(card.creditLimit)} ({utilization}%)
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            );
+          })}
+        </Accordion>
+      </div>
+      <div className="mt-6">
+        <Button
+          onClick={handleConnectAll}
+          disabled={selectedCards.length === 0}
+          className="w-full bg-gradient-primary"
+        >
+          Connect All Accounts ({selectedCards.length} card{selectedCards.length !== 1 ? 's' : ''})
+        </Button>
       </div>
     </>
   );
 
-  const renderAccountSelection = () => {
-    const bankCards = getSelectedBankCards();
-    
-    return (
-      <>
-        <DialogHeader>
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" onClick={handleBack}>
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-            <div>
-              <DialogTitle>{selectedBank?.name}</DialogTitle>
-              <DialogDescription>Select credit cards to connect</DialogDescription>
-            </div>
-          </div>
-        </DialogHeader>
-        <div className="space-y-3 mt-4">
-          {bankCards.map((card) => {
-            const isAlreadyConnected = connectedCardIds.includes(card.id);
-            const isSelected = selectedCards.includes(card.id);
-            const utilization = Math.round((card.currentBalance / card.creditLimit) * 100);
-            
-            return (
-              <div
-                key={card.id}
-                className={`p-4 rounded-lg border transition-all ${
-                  isAlreadyConnected 
-                    ? 'border-border bg-muted/30 opacity-60'
-                    : isSelected
-                    ? 'border-accent bg-accent/5 shadow-glow'
-                    : 'border-border hover:border-accent/50'
-                }`}
-              >
-                <div className="flex items-start gap-3">
-                  {!isAlreadyConnected && (
-                    <Checkbox
-                      checked={isSelected}
-                      onCheckedChange={() => toggleCardSelection(card.id)}
-                      className="mt-1"
-                    />
-                  )}
-                  <div className={`h-12 w-20 rounded-lg bg-gradient-to-br ${card.color} flex items-center justify-center text-white font-mono text-xs flex-shrink-0`}>
-                    •••• {card.lastFour}
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <p className="font-semibold">{card.name}</p>
-                      {isAlreadyConnected && (
-                        <Badge variant="secondary" className="bg-accent/10 text-accent">
-                          <Check className="h-3 w-3 mr-1" />
-                          Connected
-                        </Badge>
-                      )}
-                    </div>
-                    <p className="text-sm text-muted-foreground">Last 4: ••••{card.lastFour}</p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Balance: {formatCurrency(card.currentBalance)} of {formatCurrency(card.creditLimit)} limit ({utilization}% utilization)
-                    </p>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        <div className="flex gap-3 mt-6">
-          <Button variant="outline" onClick={handleBack} className="flex-1">
-            Back
-          </Button>
-          <Button
-            onClick={handleConnect}
-            disabled={selectedCards.length === 0}
-            className="flex-1 bg-gradient-primary"
-          >
-            Connect {selectedCards.length} Card{selectedCards.length !== 1 ? 's' : ''}
-          </Button>
-        </div>
-      </>
-    );
-  };
 
   const renderLoading = () => {
     const messages = [
@@ -274,7 +252,7 @@ export const PlaidConnectModal = ({ open, onOpenChange, onCardsConnected, connec
     
     return (
       <div className="text-center py-8">
-        <DialogTitle className="mb-6">Connecting to {selectedBank?.name}...</DialogTitle>
+        <DialogTitle className="mb-6">Connecting Your Accounts...</DialogTitle>
         <div className="flex justify-center mb-4">
           <Loader2 className="h-16 w-16 text-accent animate-spin" />
         </div>
@@ -293,6 +271,10 @@ export const PlaidConnectModal = ({ open, onOpenChange, onCardsConnected, connec
 
   const renderSuccess = () => {
     const addedCards = mockCards.filter(card => selectedCards.includes(card.id));
+    const bankNames = banks
+      .filter(bank => bank.cardIds.some(id => selectedCards.includes(id)))
+      .map(bank => bank.name)
+      .join(", ");
     
     return (
       <>
@@ -304,9 +286,9 @@ export const PlaidConnectModal = ({ open, onOpenChange, onCardsConnected, connec
         </DialogHeader>
         <div className="space-y-4 mt-4">
           <p className="text-sm">
-            Added {selectedCards.length} card{selectedCards.length !== 1 ? 's' : ''} from {selectedBank?.name}:
+            Added {selectedCards.length} card{selectedCards.length !== 1 ? 's' : ''} from {bankNames}:
           </p>
-          <div className="space-y-2">
+          <div className="space-y-2 max-h-[40vh] overflow-y-auto">
             {addedCards.map((card) => (
               <div key={card.id} className="flex items-center gap-2 p-3 rounded-lg bg-accent/5 border border-accent/20">
                 <Check className="h-4 w-4 text-accent" />
@@ -327,8 +309,7 @@ export const PlaidConnectModal = ({ open, onOpenChange, onCardsConnected, connec
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
-        {step === "bank-selection" && renderBankSelection()}
-        {step === "account-selection" && renderAccountSelection()}
+        {step === "selection" && renderSelection()}
         {step === "loading" && renderLoading()}
         {step === "success" && renderSuccess()}
       </DialogContent>
