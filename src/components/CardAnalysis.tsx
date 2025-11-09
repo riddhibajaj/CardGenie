@@ -34,11 +34,11 @@ const CardAnalysis = () => {
           description: (
             <span>
               Planning to grab something from Zeeks Pizza today? Remember to use your{" "}
-              <strong className="text-primary font-bold">Citi Double Cash</strong> to earn{" "}
-              <strong className="text-accent font-bold">2x rewards</strong>.
+              <strong className="text-primary font-bold">Chase Freedom Flex</strong> to earn{" "}
+              <strong className="text-accent font-bold">3x rewards</strong>.
             </span>
           ),
-          duration: Infinity,
+          duration: 5000,
           className: "animate-scale-in",
         });
       }, 2500);
