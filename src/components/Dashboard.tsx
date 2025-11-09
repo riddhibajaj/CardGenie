@@ -110,7 +110,7 @@ const Dashboard = () => {
       <main className="container mx-auto px-4 py-8 space-y-8">
         {/* Hero Section - Financial Health Snapshot */}
         <div className="grid lg:grid-cols-2 gap-6">
-          <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
+          <Card className="bg-white dark:bg-card border-border/50 shadow-sm">
             <CardHeader>
               <CardDescription>Total Rewards Value</CardDescription>
               <CardTitle className="text-4xl text-foreground">{formatCurrency(totalRewardsValue)}</CardTitle>
