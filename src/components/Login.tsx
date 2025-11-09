@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CreditCard } from "lucide-react";
+import { CreditCard, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -8,7 +8,17 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-accent/5 flex items-center justify-center p-4 animate-fade-in">
-      <Card className="w-full max-w-md shadow-xl animate-scale-in">
+      <div className="w-full max-w-md">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => navigate("/")}
+          className="mb-4 gap-2 text-muted-foreground hover:text-foreground"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to Home Page
+        </Button>
+        <Card className="w-full shadow-xl animate-scale-in">
         <CardHeader className="text-center space-y-4">
           <div className="mx-auto h-16 w-16 rounded-2xl bg-gradient-accent flex items-center justify-center animate-pulse">
             <CreditCard className="h-8 w-8 text-white" />
@@ -39,6 +49,7 @@ const Login = () => {
           </div>
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 };

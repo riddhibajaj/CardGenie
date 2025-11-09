@@ -2,6 +2,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { 
   TrendingUp, 
   AlertTriangle, 
@@ -11,7 +17,8 @@ import {
   Sparkles,
   Bell,
   MessageSquare,
-  User
+  User,
+  LogOut
 } from "lucide-react";
 import { mockUser, mockCards, mockLoyaltyAccounts, mockAlerts, mockGoals } from "@/data/mockData";
 import { useNavigate } from "react-router-dom";
@@ -98,10 +105,24 @@ const Dashboard = () => {
               <Button variant="outline" size="icon" onClick={() => navigate("/alerts")}>
                 <Bell className="h-5 w-5" />
               </Button>
-              <Button onClick={() => navigate("/profile")} className="bg-gradient-primary">
-                <User className="mr-2 h-4 w-4" />
-                Profile
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button className="bg-gradient-primary">
+                    <User className="mr-2 h-4 w-4" />
+                    Profile
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => navigate("/profile")}>
+                    <User className="mr-2 h-4 w-4" />
+                    View Profile
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/")}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Log Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
         </div>
