@@ -38,10 +38,10 @@ const CardAnalysis = () => {
               <strong className="text-accent font-bold">3x rewards</strong>.
             </span>
           ),
-          duration: Infinity, // Won't auto-dismiss
+          duration: 5000,
           className: "animate-scale-in",
         });
-      }, 3000);
+      }, 500);
       
       return () => clearTimeout(timer);
     }
