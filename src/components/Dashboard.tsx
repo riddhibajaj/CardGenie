@@ -110,7 +110,7 @@ const Dashboard = () => {
       <main className="container mx-auto px-4 py-8 space-y-8">
         {/* Hero Section - Financial Health Snapshot */}
         <div className="grid lg:grid-cols-2 gap-6">
-          <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
+          <Card className="cursor-pointer hover:border-primary transition-colors">
             <CardHeader>
               <CardDescription>Total Rewards Value</CardDescription>
               <CardTitle className="text-4xl text-foreground">{formatCurrency(totalRewardsValue)}</CardTitle>
@@ -257,7 +257,7 @@ const Dashboard = () => {
             </CardContent>
           </Card>
 
-          <Card className="border-2 border-warning bg-warning/5">
+          <Card className="border-2 border-warning">
             <CardHeader>
               <CardTitle className="text-warning">Expiration Alerts</CardTitle>
               <CardDescription>Rewards expiring soon</CardDescription>
