@@ -26,8 +26,8 @@ const CardAnalysis = () => {
 
   // Show notification when Chase Freedom Flex tab is clicked
   useEffect(() => {
-    // Check if the selected card is Chase Freedom Flex (id "1")
-    if (selectedCardId === "1") {
+    // Check if the selected card is Chase Freedom Flex (id "3")
+    if (selectedCardId === "3") {
       const timer = setTimeout(() => {
         toast({
           title: "Lunch Time, Riddhi!",
