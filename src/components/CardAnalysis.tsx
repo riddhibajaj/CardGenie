@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowLeft, TrendingUp, Calendar, Target, AlertCircle } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 import ThemeToggle from "./ThemeToggle";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -22,6 +23,28 @@ const CardAnalysis = () => {
   const displayedCards = getConnectedCards();
   
   const [selectedCardId, setSelectedCardId] = useState(displayedCards[0]?.id || "");
+
+  useEffect(() => {
+    // Check if this is the first visit
+    const hasVisited = localStorage.getItem('cardAnalysisVisited');
+    
+    if (!hasVisited) {
+      // Show notification after 2.5 seconds
+      const timer = setTimeout(() => {
+        toast({
+          title: "Lunch Time, Riddhi!",
+          description: "Planning to grab something from Zeeks Pizza today? Remember to use your Chase Freedom to earn 3x rewards.",
+          duration: Infinity, // Won't auto-dismiss
+          className: "animate-fade-in",
+        });
+      }, 2500);
+
+      // Mark as visited
+      localStorage.setItem('cardAnalysisVisited', 'true');
+      
+      return () => clearTimeout(timer);
+    }
+  }, []);
   
   const card = displayedCards.find(c => c.id === selectedCardId);
   const cardTransactions = mockTransactions.filter(t => t.cardId === selectedCardId);
