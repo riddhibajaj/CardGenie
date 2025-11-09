@@ -24,33 +24,28 @@ const CardAnalysis = () => {
   
   const [selectedCardId, setSelectedCardId] = useState(displayedCards[0]?.id || "");
 
+  // Show notification when Chase Freedom Flex tab is clicked
   useEffect(() => {
-    // Check if this is the first visit
-    const hasVisited = localStorage.getItem('cardAnalysisVisited');
-    
-    if (!hasVisited) {
-      // Show notification after 2.5 seconds
+    // Check if the selected card is Chase Freedom Flex (id "1")
+    if (selectedCardId === "1") {
       const timer = setTimeout(() => {
         toast({
           title: "Lunch Time, Riddhi!",
           description: (
             <span>
               Planning to grab something from Zeeks Pizza today? Remember to use your{" "}
-              <strong className="text-primary font-bold">Chase Freedom</strong> to earn{" "}
+              <strong className="text-primary font-bold">Chase Freedom Flex</strong> to earn{" "}
               <strong className="text-accent font-bold">3x rewards</strong>.
             </span>
           ),
           duration: Infinity, // Won't auto-dismiss
           className: "animate-scale-in",
         });
-      }, 2500);
-
-      // Mark as visited
-      localStorage.setItem('cardAnalysisVisited', 'true');
+      }, 3000);
       
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [selectedCardId]);
   
   const card = displayedCards.find(c => c.id === selectedCardId);
   const cardTransactions = mockTransactions.filter(t => t.cardId === selectedCardId);
