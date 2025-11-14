@@ -17,6 +17,7 @@ CardGenie - an intelligent recommendation engine that analyzes your card portfol
 
 ## System Architecture Design
 The system is designed with a modular, cloud-native architecture that enables scalability and real-time recommendations.
+
 <img width="400" height="600" alt="cardgenie" src="https://github.com/user-attachments/assets/c9207f13-192a-4a76-b149-1816242352b1" />
 
 ## HuskyHack 2025
