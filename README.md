@@ -1,73 +1,32 @@
-# Welcome to your Lovable project
+# CardGenie
+CardGenie is a fintech solution designed to help users maximize the value of their credit cards and loyalty programs. It intelligently analyzes your card portfolio, reward structures, and spending patterns to recommend the optimal card for each purchase, helping users save money, improve financial wellness, and reduce everyday stress.
 
-## Project info
+## Problem Statement
+Credit card users leave an average of $500-600 annually in rewards on the table because they don't know which card to use for each purchase, miss bonus category activations, and let points expire.
 
-**URL**: https://lovable.dev/projects/17eccd5d-e41a-4853-aaf4-9476817a2588
+## Solution
+CardGenie - an intelligent recommendation engine that analyzes your card portfolio, reward structures, and spending patterns to instantly recommend the optimal card for each purchase.
 
-## How can I edit this code?
+## Features
+- **Smart Card Selector:** Real-time recommendations for optimal card usage based on merchant, category, location, and current bonuses
+- **Card Portfolio Manager:** Visual dashboard for all cards and loyalty programs
+- **Real-Time Notifications:** Personalized alerts guide users to use the best card for each purchase
+- **Expiration Alerts:** Push notifications 30, 7, and 1 day before point expiry
+- **Credit Utilization Monitor:** Track utilization and optimize payment timing for credit score health
+- **AI Chat Integration:** GPT-4 powered assistance for personalized guidance
 
-There are several ways of editing your application.
+## System Architecture Design
+The system is designed with a modular, cloud-native architecture that enables scalability and real-time recommendations.
+<img width="400" height="600" alt="cardgenie" src="https://github.com/user-attachments/assets/c9207f13-192a-4a76-b149-1816242352b1" />
 
-**Use Lovable**
+## HuskyHack 2025
+This project was developed for the HuskyHack FinTech Hackathon, a 2-phase competition focused on helping consumers maximize financial benefits.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/17eccd5d-e41a-4853-aaf4-9476817a2588) and start prompting.
+## Acknowledgements
+Special thanks to:
+* Sound Credit Union
+* University of Washington Tacoma
+* Milgard Center for Business Analytics
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/17eccd5d-e41a-4853-aaf4-9476817a2588) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## License
+MIT License © 2025 Riddhi Bajaj
